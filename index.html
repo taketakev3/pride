@@ -41,11 +41,20 @@ body {
 /* 入力パネル */
 .input-panel {
   display: none;
-  padding: 25px;            /* ← パネルの余白アップ */
-  border: 2px solid #aaa;
-  width: 350px;             /* ← パネル幅アップ */
+  padding: 15px;
+  border: 1px solid #aaa;
+  width: 280px;
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 8px;
+  height: 6rem;        /* ← 追加：パネルの高さを6remに */
+  overflow: hidden;    /* ← 内容がはみ出るのを防ぐ */
+}
+
+.notice {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
 }
 
 .panel-title {
@@ -174,6 +183,12 @@ button {
 
   <button onclick="checkEntry(3)">判定</button>
   <div id="msg3"></div>
+</div>
+<div class="notice">
+   ・ゲーム名とパラレル名は正確に入力してください。<br>
+   ・抽選後に名前を変更された場合は、変更前の名前を入力してください。<br>
+   ・お困りごとがございましたら隊長までご連絡ください。（TikTokのアカウントのURL）<br>
+   ※いたずらでのご連絡の場合、今後の参加資格をはく奪される可能性がございます。ご了承ください。
 </div>
 
 <script>

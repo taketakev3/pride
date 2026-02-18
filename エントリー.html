@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>PRIDE エントリーページ</title>
+<title>PRIDE データ追加ページ</title>
 
 <style>
 body {
@@ -110,6 +110,19 @@ button.add-btn:hover {
   border-bottom: 1px solid #ddd;
   font-size: 18px;
 }
+
+/* ▼ 注意書き（1回だけ表示） */
+.notice {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+  line-height: 1.6;
+}
+
+.notice .warning {
+  color: red;
+}
 </style>
 </head>
 
@@ -165,10 +178,17 @@ button.add-btn:hover {
     <div id="entryList"></div>
   </div>
 
+  <!-- ▼ 注意書き（1回だけ） -->
+  <div class="notice">
+    ・入力内容は正確に記入してください。<br>
+    ・抽選後に名前を変更した場合は、抽選などは変更前の名前が使用されます。。<br>
+    ・お困りの際は隊長までご連絡ください。<a href="https://www.tiktok.com/@captain122483" target="_blank">（ヘルパー隊長）</a>
+  </div>
+
   <!-- 戻る -->
   <div style="text-align:center; margin-top:25px;">
-    <a href="main.html">
-      <button style="background:#555; padding:12px 25px; font-size:20px;">← メインページへ戻る</button>
+    <a href="index.html">
+      <button style="padding:12px 25px; font-size:20px;">← メインページへ戻る</button>
     </a>
   </div>
 

@@ -1,222 +1,310 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>16人トーナメント</title>
-  <style>
-    .round {
-      display: inline-block;
-      vertical-align: top;
-      margin: 10px;
-    }
-    .match {
-      border: 1px solid #ccc;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    .slot {
-      display: flex;
-      justify-content: space-between;
-      margin: 4px 0;
-    }
-    .next-slot {
-      margin-top: 8px;
-      font-weight: bold;
-      color: #0077cc;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>16人トーナメント</title>
+<style>
+  body { font-family: sans-serif; }
+
+  .bracket {
+    display: flex;
+    gap: 40px;
+  }
+
+  .round {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .match {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .slot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+  }
+
+  .name {
+    width: 120px;
+    padding: 4px;
+    border: 1px solid #aaa;
+    background: #fff;
+  }
+
+  .btn {
+    padding: 3px 6px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  /* 線（トーナメントの枝） */
+  .line {
+    position: absolute;
+    right: -20px;
+    width: 20px;
+    height: 2px;
+    background: #000;
+    top: 50%;
+  }
+</style>
 </head>
 <body>
-  <h1>16人トーナメント</h1>
+
+<h1>16人トーナメント（勝ち・戻すボタン付き）</h1>
+
+<div class="bracket">
 
   <!-- 1回戦 -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
-    <!-- 試合1 -->
+    <!-- 8試合 -->
     <div class="match" data-next="r2m1">
-      <div class="slot">
-        <span class="name">プレイヤー1</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P1</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー2</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P2</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合2 -->
     <div class="match" data-next="r2m1">
-      <div class="slot">
-        <span class="name">プレイヤー3</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P3</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー4</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P4</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合3 -->
     <div class="match" data-next="r2m2">
-      <div class="slot">
-        <span class="name">プレイヤー5</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P5</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー6</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P6</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合4 -->
     <div class="match" data-next="r2m2">
-      <div class="slot">
-        <span class="name">プレイヤー7</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P7</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー8</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P8</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合5 -->
     <div class="match" data-next="r2m3">
-      <div class="slot">
-        <span class="name">プレイヤー9</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P9</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー10</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P10</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合6 -->
     <div class="match" data-next="r2m3">
-      <div class="slot">
-        <span class="name">プレイヤー11</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P11</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー12</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P12</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合7 -->
     <div class="match" data-next="r2m4">
-      <div class="slot">
-        <span class="name">プレイヤー13</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P13</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー14</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P14</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
 
-    <!-- 試合8 -->
     <div class="match" data-next="r2m4">
-      <div class="slot">
-        <span class="name">プレイヤー15</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P15</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
-      <div class="slot">
-        <span class="name">プレイヤー16</span>
-        <button class="win-btn">勝ち</button>
+      <div class="slot"><span class="name">P16</span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
       </div>
+      <div class="line"></div>
     </div>
   </div>
 
   <!-- 2回戦 -->
-  <div class="round" id="round2">
+  <div class="round">
     <h2>2回戦</h2>
 
     <div class="match" id="r2m1" data-next="r3m1">
-      <div class="next-slot">勝者1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">勝者2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
 
     <div class="match" id="r2m2" data-next="r3m1">
-      <div class="next-slot">勝者3：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">勝者4：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
 
     <div class="match" id="r2m3" data-next="r3m2">
-      <div class="next-slot">勝者5：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">勝者6：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
 
     <div class="match" id="r2m4" data-next="r3m2">
-      <div class="next-slot">勝者7：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">勝者8：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
   </div>
 
   <!-- 準決勝 -->
-  <div class="round" id="round3">
+  <div class="round">
     <h2>準決勝</h2>
 
     <div class="match" id="r3m1" data-next="final">
-      <div class="next-slot">準決勝1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">準決勝2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
 
     <div class="match" id="r3m2" data-next="final">
-      <div class="next-slot">準決勝3：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">準決勝4：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="line"></div>
     </div>
   </div>
 
   <!-- 決勝 -->
-  <div class="round" id="round4">
+  <div class="round">
     <h2>決勝</h2>
 
     <div class="match" id="final">
-      <div class="next-slot">決勝1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">決勝2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
-      <div class="next-slot">優勝：<span class="name" id="champion"></span></div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+      <div class="slot"><span class="name"></span>
+        <button class="btn win">勝ち</button>
+        <button class="btn undo">戻す</button>
+      </div>
+
+      <h3>優勝：<span id="champion"></span></h3>
     </div>
   </div>
 
-  <script>
-    // 勝ちボタンの動き
-    document.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("win-btn")) return;
+</div>
 
-      const slot = e.target.closest(".slot, .next-slot");
-      const nameEl = slot.querySelector(".name");
-      const winnerName = nameEl.textContent;
+<script>
+document.addEventListener("click", e => {
+  const btn = e.target;
 
-      const match = e.target.closest(".match");
-      const nextId = match.dataset.next;
-      if (!nextId) return;
+  // 勝ちボタン
+  if (btn.classList.contains("win")) {
+    const slot = btn.closest(".slot");
+    const winner = slot.querySelector(".name").textContent;
 
-      const nextMatch = document.getElementById(nextId);
-      const nextSlots = nextMatch.querySelectorAll(".next-slot .name");
+    const match = btn.closest(".match");
+    const nextId = match.dataset.next;
+    if (!nextId) return;
 
-      // 次の試合の空いている枠に勝者を入れる
-      for (const ns of nextSlots) {
-        if (!ns.textContent) {
-          ns.textContent = winnerName;
-          break;
-        }
+    const nextMatch = document.getElementById(nextId);
+    const nextSlots = nextMatch.querySelectorAll(".slot .name");
+
+    for (const ns of nextSlots) {
+      if (!ns.textContent) {
+        ns.textContent = winner;
+        break;
       }
+    }
 
-      // 決勝の勝者ならチャンピオン表示
-      if (nextId === "final") {
-        const finalNames = nextMatch.querySelectorAll(".next-slot .name");
-        const filled = Array.from(finalNames).filter(n => n.textContent);
-        if (filled.length === 2) {
-          // 決勝のボタンでさらに勝者を決める
-          if (slot.parentElement.id === "final") {
-            document.getElementById("champion").textContent = winnerName;
-          }
-        }
+    if (nextId === "final") {
+      const finalNames = nextMatch.querySelectorAll(".slot .name");
+      const filled = [...finalNames].filter(n => n.textContent);
+      if (filled.length === 2) {
+        document.getElementById("champion").textContent = winner;
       }
-    });
-  </script>
+    }
+  }
+
+  // 戻すボタン
+  if (btn.classList.contains("undo")) {
+    const slot = btn.closest(".slot");
+    const nameEl = slot.querySelector(".name");
+    nameEl.textContent = "";
+  }
+});
+</script>
+
 </body>
 </html>

@@ -1,148 +1,222 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>PRIDE</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #f5f5f5;
-}
-
-/* ▼ ヘッダー（大きくしたバージョン） */
-.header {
-  width: 100%;
-  height: 16rem; /* ← 高さアップ */
-  background: #222;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
-  box-sizing: border-box;
-}
-
-.header-title {
-  font-size: 36px;
-  font-weight: bold;
-}
-
-.menu-btn {
-  font-size: 40px;
-  cursor: pointer;
-  user-select: none;
-  padding: 10px 25px;   /* ← 横に広げる */
-  background: #333;     /* ← ボタン感を出す（任意） */
-  border-radius: 8px;   /* ← 少し丸み */
-
-}
-
-/* ▼ サイドメニュー（右からスライド） */
-.side-menu {
-  position: fixed;
-  top: 0;
-  right: -36rem; /* ← メニュー幅と同じにして完全に隠す */
-  width: 36rem;
-  height: 100%;
-  background: #333;
-  color: white;
-  padding-top: 60px;
-  box-sizing: border-box;
-  transition: right 0.3s ease;
-  z-index: 10; /* ← メニューを最前面に */
-}
-
-.side-menu.open {
-  right: 0;
-}
-
-.side-menu a {
-  display: block;
-  padding: 15px 20px;
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  border-bottom: 1px solid #444;
-}
-
-.side-menu a:hover {
-  background: #444;
-}
-
-/* ▼ メニュー外の黒いカバー（クリックで閉じる） */
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: none; /* 初期は非表示 */
-  z-index: 5;    /* メニューより下、画面より上 */
-}
-
-/* ▼ メインコンテンツ */
-.main-content {
-  padding: 40px;
-  text-align: center;
-  font-size: 22px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>16人トーナメント</title>
+  <style>
+    .round {
+      display: inline-block;
+      vertical-align: top;
+      margin: 10px;
+    }
+    .match {
+      border: 1px solid #ccc;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    .slot {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+    .next-slot {
+      margin-top: 8px;
+      font-weight: bold;
+      color: #0077cc;
+    }
+  </style>
 </head>
-
 <body>
+  <h1>16人トーナメント</h1>
 
-<!-- ヘッダー -->
-<div class="header">
-  <div class="header-title">PRIDE</div>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-</div>
+  <!-- 1回戦 -->
+  <div class="round" id="round1">
+    <h2>1回戦</h2>
 
-<!-- サイドメニュー -->
-<div id="sideMenu" class="side-menu">
-  <a href="#">SR</a>
-  <a href="#">マークスマン</a>
-  <a href="#">レディース</a>
-  <a href="#">楽曲提供者様</a>
-  <a href="#">スタッフ一覧</a>
-  <a href="entry.html">エントリー</a>
+    <!-- 試合1 -->
+    <div class="match" data-next="r2m1">
+      <div class="slot">
+        <span class="name">プレイヤー1</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー2</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-  <!-- ▼ 一番下に参加者確認 -->
-  <a href="参加者確認.html">参加者確認</a>
-</div>
+    <!-- 試合2 -->
+    <div class="match" data-next="r2m1">
+      <div class="slot">
+        <span class="name">プレイヤー3</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー4</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-<!-- ▼ メニュー外クリック用の黒カバー -->
-<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+    <!-- 試合3 -->
+    <div class="match" data-next="r2m2">
+      <div class="slot">
+        <span class="name">プレイヤー5</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー6</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-<!-- メイン表示部分 -->
-<div class="main-content">
-  ようこそ、PRIDE メインページへ。
-</div>
+    <!-- 試合4 -->
+    <div class="match" data-next="r2m2">
+      <div class="slot">
+        <span class="name">プレイヤー7</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー8</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-<script>
-function toggleMenu() {
-  const menu = document.getElementById("sideMenu");
-  const overlay = document.getElementById("menuOverlay");
+    <!-- 試合5 -->
+    <div class="match" data-next="r2m3">
+      <div class="slot">
+        <span class="name">プレイヤー9</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー10</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-  menu.classList.toggle("open");
+    <!-- 試合6 -->
+    <div class="match" data-next="r2m3">
+      <div class="slot">
+        <span class="name">プレイヤー11</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー12</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-  if (menu.classList.contains("open")) {
-    overlay.style.display = "block";  // カバー表示
-  } else {
-    overlay.style.display = "none";   // カバー非表示
-  }
-}
+    <!-- 試合7 -->
+    <div class="match" data-next="r2m4">
+      <div class="slot">
+        <span class="name">プレイヤー13</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー14</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
 
-function closeMenu() {
-  const menu = document.getElementById("sideMenu");
-  const overlay = document.getElementById("menuOverlay");
+    <!-- 試合8 -->
+    <div class="match" data-next="r2m4">
+      <div class="slot">
+        <span class="name">プレイヤー15</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+      <div class="slot">
+        <span class="name">プレイヤー16</span>
+        <button class="win-btn">勝ち</button>
+      </div>
+    </div>
+  </div>
 
-  menu.classList.remove("open");
-  overlay.style.display = "none";
-}
-</script>
+  <!-- 2回戦 -->
+  <div class="round" id="round2">
+    <h2>2回戦</h2>
 
+    <div class="match" id="r2m1" data-next="r3m1">
+      <div class="next-slot">勝者1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">勝者2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+
+    <div class="match" id="r2m2" data-next="r3m1">
+      <div class="next-slot">勝者3：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">勝者4：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+
+    <div class="match" id="r2m3" data-next="r3m2">
+      <div class="next-slot">勝者5：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">勝者6：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+
+    <div class="match" id="r2m4" data-next="r3m2">
+      <div class="next-slot">勝者7：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">勝者8：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+  </div>
+
+  <!-- 準決勝 -->
+  <div class="round" id="round3">
+    <h2>準決勝</h2>
+
+    <div class="match" id="r3m1" data-next="final">
+      <div class="next-slot">準決勝1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">準決勝2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+
+    <div class="match" id="r3m2" data-next="final">
+      <div class="next-slot">準決勝3：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">準決勝4：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+    </div>
+  </div>
+
+  <!-- 決勝 -->
+  <div class="round" id="round4">
+    <h2>決勝</h2>
+
+    <div class="match" id="final">
+      <div class="next-slot">決勝1：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">決勝2：<span class="name"></span> <button class="win-btn">勝ち</button></div>
+      <div class="next-slot">優勝：<span class="name" id="champion"></span></div>
+    </div>
+  </div>
+
+  <script>
+    // 勝ちボタンの動き
+    document.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("win-btn")) return;
+
+      const slot = e.target.closest(".slot, .next-slot");
+      const nameEl = slot.querySelector(".name");
+      const winnerName = nameEl.textContent;
+
+      const match = e.target.closest(".match");
+      const nextId = match.dataset.next;
+      if (!nextId) return;
+
+      const nextMatch = document.getElementById(nextId);
+      const nextSlots = nextMatch.querySelectorAll(".next-slot .name");
+
+      // 次の試合の空いている枠に勝者を入れる
+      for (const ns of nextSlots) {
+        if (!ns.textContent) {
+          ns.textContent = winnerName;
+          break;
+        }
+      }
+
+      // 決勝の勝者ならチャンピオン表示
+      if (nextId === "final") {
+        const finalNames = nextMatch.querySelectorAll(".next-slot .name");
+        const filled = Array.from(finalNames).filter(n => n.textContent);
+        if (filled.length === 2) {
+          // 決勝のボタンでさらに勝者を決める
+          if (slot.parentElement.id === "final") {
+            document.getElementById("champion").textContent = winnerName;
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

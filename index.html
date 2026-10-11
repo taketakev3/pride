@@ -177,6 +177,9 @@ document.addEventListener("click", e => {
     const nextId = match.dataset.next;
     if (!nextId) return;
 
+    // 勝った試合を記録
+    match.dataset.winnerMatch = match.id;
+
     const nextMatch = document.getElementById(nextId);
     const nextSlots = nextMatch.querySelectorAll(".slot .name");
 
@@ -211,7 +214,7 @@ document.addEventListener("click", e => {
     }
   }
 
-  // 戻すボタン（対応ブロックだけ戻す）
+  // 戻すボタン（勝った試合だけ復活）
   if (btn.classList.contains("undo")) {
     const match = btn.closest(".match");
 
@@ -223,12 +226,13 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
-    // data-prev に書かれた試合だけ復活
+    // data-prev に書かれた試合のうち「勝った試合だけ」復活
     const prevIds = match.dataset.prev.split(",");
     prevIds.forEach(id => {
       const prevMatch = document.getElementById(id);
-      if (prevMatch) {
+      if (prevMatch && prevMatch.dataset.winnerMatch) {
         prevMatch.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
+        delete prevMatch.dataset.winnerMatch;
       }
     });
   }

@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（グリッド版・位置完全固定＋線あり）</title>
+<title>16人トーナメント（完全位置修正＋階段線＋逆L字＋赤変色）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -12,30 +12,25 @@
     align-items: flex-start;
   }
 
-  /* 各ラウンドを同じ縦グリッドに乗せる */
   .round {
-    display: grid;
-    grid-template-rows: repeat(16, 40px); /* 16段のマス目 */
-    row-gap: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
     position: relative;
-    min-height: 640px;
   }
 
-  .round > h2 {
-    grid-row: 1 / 2;
-    margin-bottom: 10px;
-  }
-
+  /* 1試合＝2スロット＝120px */
   .match {
     position: relative;
     padding-left: 20px;
+    height: 120px;
   }
 
   .slot {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin: 4px 0;
+    height: 60px; /* ←標準高さ */
   }
 
   .name {
@@ -67,81 +62,50 @@
     pointer-events: none;
   }
 
-  /* 階段線（L字）＋アニメーション */
+  /* 階段線（横60＋縦60） */
   .step-line {
     position: absolute;
-    left: 150px;
+    height: 3px;
+    width: 60px; /* デフォルト黒線 */
+    background: black;
     top: 50%;
     transform: translateY(-50%);
-    width: 0px;
-    height: 2px;
-    background: black;
-    transition: width 0.4s ease-out;
   }
 
+  /* 縦線（階段の縦60） */
   .step-line::after {
     content: "";
     position: absolute;
-    right: 0;
+    left: 60px;
     top: 0;
-    width: 2px;
-    height: 0px;
+    width: 3px;
+    height: 60px;
     background: black;
-    transition: height 0.4s ease-out;
   }
 
-  .step-line.active {
-    width: 40px;
-    background: red;
+  /* 次の回戦へ行く横線（100px） */
+  .next-line {
+    position: absolute;
+    left: calc(60px + 3px); /* 階段縦線の右端 */
+    top: calc(50% + 60px); /* 縦線の下端 */
+    width: 100px;
+    height: 3px;
+    background: black;
   }
 
-  .step-line.active::after {
-    height: 40px;
-    background: red;
+  /* 勝利時に赤く変色 */
+  .active {
+    background: red !important;
   }
-
-  /* ★ 行割り当て：ここが「この字」になる肝 */
-
-  /* 1回戦：8試合を縦に並べる */
-  #r1m1 { grid-row: 2 / 4; }
-  #r1m2 { grid-row: 4 / 6; }
-  #r1m3 { grid-row: 6 / 8; }
-  #r1m4 { grid-row: 8 / 10; }
-  #r1m5 { grid-row: 10 / 12; }
-  #r1m6 { grid-row: 12 / 14; }
-  #r1m7 { grid-row: 14 / 16; }
-  #r1m8 { grid-row: 16 / 18; } /* ちょっと下に余裕を持たせる */
-
-  /* 2回戦：1回戦の間に来るように */
-  /* r2m1 は r1m1(2-4) と r1m2(4-6) の間 → 3-5 あたり */
-  #r2m1 { grid-row: 3 / 5; }
-  /* r2m2 は r1m3(6-8) と r1m4(8-10) の間 → 7-9 */
-  #r2m2 { grid-row: 7 / 9; }
-  /* r2m3 は r1m5(10-12) と r1m6(12-14) の間 → 11-13 */
-  #r2m3 { grid-row: 11 / 13; }
-  /* r2m4 は r1m7(14-16) と r1m8(16-18) の間 → 15-17 */
-  #r2m4 { grid-row: 15 / 17; }
-
-  /* 準決勝：2回戦の間に来るように */
-  /* r3m1 は r2m1(3-5) と r2m2(7-9) の間 → 5-7 */
-  #r3m1 { grid-row: 5 / 7; }
-  /* r3m2 は r2m3(11-13) と r2m4(15-17) の間 → 13-15 */
-  #r3m2 { grid-row: 13 / 15; }
-
-  /* 決勝：準決勝の間に来るように */
-  /* final は r3m1(5-7) と r3m2(13-15) の間 → 9-11 */
-  #final { grid-row: 9 / 11; }
-
-  /* 決勝の「優勝」表示は少し下に */
-  #final h3 {
-    margin-top: 20px;
+  .active::after {
+    background: red !important;
   }
 
 </style>
 </head>
 <body>
 
-<h1>16人トーナメント（グリッド版・位置完全固定＋線あり）</h1>
+<h1>16人トーナメント（階段線＋逆L字＋赤変色＋位置安定）</h1>
 
 <div class="bracket">
 
@@ -201,7 +165,10 @@
       <div class="slot" data-prev="r1m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
+      <!-- 階段線（ボタンの右端から出す） -->
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
 
     <div class="match" id="r2m2" data-next="r3m1">
@@ -211,7 +178,9 @@
       <div class="slot" data-prev="r1m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
 
     <div class="match" id="r2m3" data-next="r3m2">
@@ -221,7 +190,9 @@
       <div class="slot" data-prev="r1m6"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
 
     <div class="match" id="r2m4" data-next="r3m2">
@@ -231,7 +202,9 @@
       <div class="slot" data-prev="r1m8"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
   </div>
 
@@ -246,7 +219,9 @@
       <div class="slot" data-prev="r2m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
 
     <div class="match" id="r3m2" data-next="final">
@@ -256,7 +231,9 @@
       <div class="slot" data-prev="r2m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+
       <div class="step-line"></div>
+      <div class="next-line"></div>
     </div>
   </div>
 
@@ -273,6 +250,7 @@
       </div>
 
       <h3>優勝：<span id="champion"></span></h3>
+
       <div class="step-line"></div>
     </div>
   </div>
@@ -316,8 +294,10 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
-    const step = match.querySelector(".step-line");
-    if (step) step.classList.add("active");
+    /* 線を赤くする */
+    match.querySelector(".step-line").classList.add("active");
+    const nextLine = match.querySelector(".next-line");
+    if (nextLine) nextLine.classList.add("active");
 
     if (match.id === "final") {
       document.getElementById("champion").textContent = winnerName;
@@ -346,8 +326,9 @@ document.addEventListener("click", e => {
 
     delete slot.dataset.winner;
 
-    const step = match.querySelector(".step-line");
-    if (step) step.classList.remove("active");
+    match.querySelector(".step-line").classList.remove("active");
+    const nextLine = match.querySelector(".next-line");
+    if (nextLine) nextLine.classList.remove("active");
 
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";

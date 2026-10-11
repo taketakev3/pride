@@ -2,25 +2,27 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（縦型＋勝利ライン）</title>
+<title>16人トーナメント（縦型＋勝利ライン＋枝線＋位置調整）</title>
 <style>
   body { font-family: sans-serif; }
 
   .bracket {
     display: flex;
-    gap: 60px;
+    gap: 120px; /* 2回戦を中央に寄せるため広めに */
     align-items: flex-start;
   }
 
   .round {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 60px; /* 1回戦の高さを揃える */
+    position: relative;
   }
 
   .match {
     position: relative;
     padding-left: 20px;
+    min-height: 80px; /* 1試合の高さを固定して中央寄せしやすくする */
   }
 
   .slot {
@@ -57,11 +59,35 @@
     opacity: 0.5;
     pointer-events: none;
   }
+
+  /* トーナメント枝線（黒） */
+  .branch {
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    background: black;
+    left: -40px;
+    top: 50%;
+  }
+
+  /* 2回戦を1回戦の間に配置する */
+  #r2m1 { top: 40px; }
+  #r2m2 { top: 40px; }
+  #r2m3 { top: 40px; }
+  #r2m4 { top: 40px; }
+
+  /* 準決勝も中央寄せ */
+  #r3m1 { top: 60px; }
+  #r3m2 { top: 60px; }
+
+  /* 決勝はさらに中央 */
+  #final { top: 80px; }
+
 </style>
 </head>
 <body>
 
-<h1>16人トーナメント（縦型＋勝利ライン）</h1>
+<h1>16人トーナメント（縦型＋勝利ライン＋枝線）</h1>
 
 <div class="bracket">
 
@@ -72,41 +98,49 @@
     <div class="match" id="r1m1" data-next="r2m1">
       <div class="slot"><span class="name">P1</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P2</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m2" data-next="r2m1">
       <div class="slot"><span class="name">P3</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P4</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m3" data-next="r2m2">
       <div class="slot"><span class="name">P5</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P6</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m4" data-next="r2m2">
       <div class="slot"><span class="name">P7</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P8</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m5" data-next="r2m3">
       <div class="slot"><span class="name">P9</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P10</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m6" data-next="r2m3">
       <div class="slot"><span class="name">P11</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P12</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m7" data-next="r2m4">
       <div class="slot"><span class="name">P13</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P14</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m8" data-next="r2m4">
       <div class="slot"><span class="name">P15</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
+      <div class="branch"></div>
     </div>
   </div>
 
@@ -121,6 +155,7 @@
       <div class="slot" data-prev="r1m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r2m2" data-next="r3m1">
@@ -130,6 +165,7 @@
       <div class="slot" data-prev="r1m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r2m3" data-next="r3m2">
@@ -139,6 +175,7 @@
       <div class="slot" data-prev="r1m6"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r2m4" data-next="r3m2">
@@ -148,6 +185,7 @@
       <div class="slot" data-prev="r1m8"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
   </div>
 
@@ -162,6 +200,7 @@
       <div class="slot" data-prev="r2m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
 
     <div class="match" id="r3m2" data-next="final">
@@ -171,6 +210,7 @@
       <div class="slot" data-prev="r2m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
+      <div class="branch"></div>
     </div>
   </div>
 
@@ -187,6 +227,7 @@
       </div>
 
       <h3>優勝：<span id="champion"></span></h3>
+      <div class="branch"></div>
     </div>
   </div>
 
@@ -214,10 +255,8 @@ document.addEventListener("click", e => {
       }
     }
 
-    // このスロットが「勝った」印
     slot.dataset.winner = "true";
 
-    // 勝利ライン
     let line = match.querySelector(".win-line");
     if (!line) {
       line = document.createElement("div");
@@ -229,10 +268,8 @@ document.addEventListener("click", e => {
     const height = slotRect.top - matchRect.top;
     line.style.height = height + "px";
 
-    // この試合の勝ちボタン無効化
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
-    // 決勝なら優勝表示
     if (match.id === "final") {
       document.getElementById("champion").textContent = winnerName;
     }
@@ -243,17 +280,13 @@ document.addEventListener("click", e => {
     const slot = btn.closest(".slot");
     const match = btn.closest(".match");
 
-    // 自分の名前消す
     slot.querySelector(".name").textContent = "";
 
-    // 勝利ライン消す
     const line = match.querySelector(".win-line");
     if (line) line.remove();
 
-    // この試合の勝ちボタン復活
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
-    // 対応する「1つ前の試合」の勝ちボタンを必ず復活
     const prevMatchId = slot.dataset.prev;
     if (prevMatchId) {
       const prevMatch = document.getElementById(prevMatchId);
@@ -262,10 +295,8 @@ document.addEventListener("click", e => {
       }
     }
 
-    // このスロットの勝ちフラグは消しておく
     delete slot.dataset.winner;
 
-    // 決勝の戻すなら優勝表示も消す
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";
     }

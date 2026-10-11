@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<title>16人トーナメント（固定進行・入力対応・表示安定版）</title>
+<title>16人トーナメント（表示安定版）</title>
 <style>
   /* 全体 */
   body { font-family: sans-serif; padding: 20px; }
@@ -21,7 +21,7 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     background: #fafafa;
-    width: 260px;            /* 少し広めにして入力欄が収まるように */
+    width: 260px;            /* 少し広め */
     box-sizing: border-box;
   }
 
@@ -32,16 +32,16 @@
     justify-content:space-between;
     margin:6px 0;
     gap:8px;
-    height: 48px;            /* 高さを大きめに固定 */
-    min-height: 48px;
+    height: 52px;            /* 高さを大きめに固定 */
+    min-height: 52px;
     box-sizing: border-box;
   }
 
   /* 1回戦の入力欄（大きめに固定） */
   .name-input {
-    width: 170px;            /* 大きめ */
-    height: 32px;            /* 高さ固定 */
-    line-height: 32px;
+    width: 180px;            /* 大きめ */
+    height: 36px;            /* 高さ固定 */
+    line-height: 36px;
     padding: 4px 8px;
     border: 1px solid #aaa;
     background: #fff;
@@ -55,9 +55,9 @@
   /* 2回戦以降の表示枠（span）も同じ大きさに固定 */
   .name {
     display: inline-block;
-    width: 170px;            /* 入力欄と同じ幅 */
-    height: 32px;            /* 入力欄と同じ高さ */
-    line-height: 32px;
+    width: 180px;            /* 入力欄と同じ幅 */
+    height: 36px;            /* 入力欄と同じ高さ */
+    line-height: 36px;
     padding: 4px 8px;
     border: 1px solid #aaa;
     background: #fff;
@@ -69,18 +69,21 @@
     font-size: 14px;
   }
 
-  /* ボタンは元の小さめサイズに戻す（変更しないでほしいとの要望） */
+  /* ボタンは小さめに固定（元の見た目） */
   .btn {
-    padding: 4px 6px;        /* 小さめ */
+    padding: 4px 6px;
     font-size: 12px;
     cursor: pointer;
-    height: 28px;
-    line-height: 20px;
+    height: 30px;
+    line-height: 18px;
     box-sizing: border-box;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #bbb;
   }
 
-  .btn.win { background: #fff; border: 1px solid #d66; color: #900; border-radius:4px; }
-  .btn.undo { background: #fff; border: 1px solid #66a; color: #165; border-radius:4px; }
+  .btn.win { border-color:#d66; color:#900; }
+  .btn.undo { border-color:#66a; color:#165; }
 
   .disabled { opacity: 0.5; pointer-events: none; }
 
@@ -89,7 +92,7 @@
 </head>
 <body>
 
-<h1>16人トーナメント（固定進行・入力対応・表示安定版）</h1>
+<h1>16人トーナメント（表示安定版）</h1>
 
 <div class="bracket">
 

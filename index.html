@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（階段線位置修正＋アニメーション）</title>
+<title>16人トーナメント（完全位置修正＋階段線＋アニメーション）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -64,10 +64,10 @@
   /* 階段線（L字） */
   .step-line {
     position: absolute;
-    left: 150px;      /* 名前の右あたり */
-    top: 50%;         /* 2つのスロットの中央 */
+    left: 150px;
+    top: 50%;
     transform: translateY(-50%);
-    width: 0px;       /* 初期は0で、activeで伸びる */
+    width: 0px;
     height: 2px;
     background: black;
     transition: width 0.4s ease-out;
@@ -79,43 +79,35 @@
     right: 0;
     top: 0;
     width: 2px;
-    height: 0px;      /* 初期は0で、activeで伸びる */
+    height: 0px;
     background: black;
     transition: height 0.4s ease-out;
   }
 
   .step-line.active {
-    width: 40px;      /* 横線が右に伸びる */
+    width: 40px;
     background: red;
   }
 
   .step-line.active::after {
-    height: 40px;     /* 縦線が下に伸びる */
+    height: 40px;
     background: red;
   }
 
-  /* 2回戦を1回戦の間に配置 */
-  #r2m1 { top: 40px; }
-  #r2m2 { top: 40px; }
-  #r2m3 { top: 40px; }
-  #r2m4 { top: 40px; }
-
-  /* 準決勝 */
-  #r3m1 { top: 60px; }
-  #r3m2 { top: 60px; }
-
-  /* 決勝 */
-  #final { top: 80px; }
+  /* ★ ここが今回の重要ポイント：中央寄せ */
+  .round:nth-child(2) .match { transform: translateY(30px); }
+  .round:nth-child(3) .match { transform: translateY(60px); }
+  .round:nth-child(4) .match { transform: translateY(90px); }
 
 </style>
 </head>
 <body>
 
-<h1>16人トーナメント（階段線＋勝利赤線＋位置修正）</h1>
+<h1>16人トーナメント（完全位置修正＋階段線＋アニメーション）</h1>
 
 <div class="bracket">
 
-  <!-- 1回戦（左線なし） -->
+  <!-- 1回戦 -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 

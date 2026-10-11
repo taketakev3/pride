@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（階段線＋勝利赤線）</title>
+<title>16人トーナメント（階段線位置修正＋アニメーション）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -61,30 +61,36 @@
     pointer-events: none;
   }
 
-  /* 階段線（L字線） */
+  /* 階段線（L字）＋アニメーション付き */
   .step-line {
     position: absolute;
-    left: 140px; /* 名前の右側 */
-    top: 50%;
-    width: 40px;
+    left: 150px;      /* 名前の右あたり */
+    top: 30%;         /* 2つのスロットの中間付近 */
+    width: 0px;       /* 初期は0で、activeで伸びる */
     height: 2px;
     background: black;
+    transition: width 0.4s ease-out;
   }
 
   .step-line::after {
     content: "";
     position: absolute;
     right: 0;
-    top: -38px;
+    top: 0;
     width: 2px;
-    height: 40px;
+    height: 0px;      /* 初期は0で、activeで伸びる */
     background: black;
+    transition: height 0.4s ease-out;
   }
 
-  /* 勝ったら赤くする */
-  .step-line.active,
+  .step-line.active {
+    width: 40px;      /* 横線が右に伸びる */
+    background: red;
+  }
+
   .step-line.active::after {
-    background: red !important;
+    height: 40px;     /* 縦線が下に伸びる */
+    background: red;
   }
 
   /* 2回戦を1回戦の間に配置 */
@@ -104,11 +110,11 @@
 </head>
 <body>
 
-<h1>16人トーナメント（階段線＋勝利赤線）</h1>
+<h1>16人トーナメント（階段線＋勝利赤線＋位置修正）</h1>
 
 <div class="bracket">
 
-  <!-- 1回戦（左線なし） -->
+  <!-- 1回戦（左の黒線なし） -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
@@ -279,7 +285,6 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
-    /* 階段線を赤くする */
     const step = match.querySelector(".step-line");
     if (step) step.classList.add("active");
 
@@ -310,7 +315,6 @@ document.addEventListener("click", e => {
 
     delete slot.dataset.winner;
 
-    /* 階段線の赤を解除 */
     const step = match.querySelector(".step-line");
     if (step) step.classList.remove("active");
 

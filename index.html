@@ -2,163 +2,234 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>完全版トーナメント</title>
-<link rel="stylesheet" href="style.css">
+<title>16人トーナメント（デフォルト線＋赤変色＋位置修正）</title>
+<style>
+  body { font-family: sans-serif; }
+
+  .bracket {
+    display: flex;
+    gap: 140px;
+    align-items: flex-start;
+  }
+
+  .round {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    position: relative;
+  }
+
+  .match {
+    position: relative;
+    padding-left: 20px;
+    min-height: 80px;
+  }
+
+  .slot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .name {
+    width: 120px;
+    padding: 4px;
+    border: 1px solid #aaa;
+    background: #fff;
+  }
+
+  .btn {
+    padding: 3px 6px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  /* 勝利ライン（縦） */
+  .win-line {
+    position: absolute;
+    width: 3px;
+    background: red;
+    left: 0px;
+    bottom: 0;
+    height: 0;
+    transition: height 0.4s ease-out;
+  }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ★ デフォルトのトーナメント線（1回戦→2回戦） */
+  .round-lines {
+    position: absolute;
+    left: 140px; /* 名前の右あたりから線を出す */
+    top: 40px;
+    width: 120px;
+    height: 520px;
+    pointer-events: none;
+  }
+
+  .round-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .round-lines line {
+    stroke: black;
+    stroke-width: 3;
+  }
+
+  .round-lines line.active {
+    stroke: red;
+  }
+
+  /* 2回戦→準決勝 */
+  .round2-lines {
+    position: absolute;
+    left: 140px;
+    top: 70px;
+    width: 120px;
+    height: 420px;
+    pointer-events: none;
+  }
+
+  .round2-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .round2-lines line {
+    stroke: black;
+    stroke-width: 3;
+  }
+
+  .round2-lines line.active {
+    stroke: red;
+  }
+
+  /* 準決勝→決勝 */
+  .round3-lines {
+    position: absolute;
+    left: 140px;
+    top: 100px;
+    width: 120px;
+    height: 260px;
+    pointer-events: none;
+  }
+
+  .round3-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .round3-lines line {
+    stroke: black;
+    stroke-width: 3;
+  }
+
+  .round3-lines line.active {
+    stroke: red;
+  }
+
+  /* ラウンド全体の縦位置調整（何回戦の間に来るように） */
+  .round:nth-child(2) { margin-top: 30px; }  /* 2回戦 */
+  .round:nth-child(3) { margin-top: 60px; }  /* 準決勝 */
+  .round:nth-child(4) { margin-top: 90px; }  /* 決勝 */
+
+</style>
 </head>
 <body>
 
-<h1>16人トーナメント（ズレゼロ完全版）</h1>
+<h1>16人トーナメント（デフォルト線＋赤変色＋位置修正）</h1>
 
 <div class="bracket">
 
   <!-- 1回戦 -->
-  <div class="round">
+  <div class="round" id="round1">
     <h2>1回戦</h2>
 
-    <!-- ★ r1m1 -->
     <div class="match" id="r1m1" data-next="r2m1">
       <div class="slot"><span class="name">P1</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P2</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m2 -->
     <div class="match" id="r1m2" data-next="r2m1">
       <div class="slot"><span class="name">P3</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P4</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m3 -->
     <div class="match" id="r1m3" data-next="r2m2">
       <div class="slot"><span class="name">P5</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P6</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m4 -->
     <div class="match" id="r1m4" data-next="r2m2">
       <div class="slot"><span class="name">P7</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P8</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m5 -->
     <div class="match" id="r1m5" data-next="r2m3">
       <div class="slot"><span class="name">P9</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P10</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m6 -->
     <div class="match" id="r1m6" data-next="r2m3">
       <div class="slot"><span class="name">P11</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P12</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m7 -->
     <div class="match" id="r1m7" data-next="r2m4">
       <div class="slot"><span class="name">P13</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P14</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
-    <!-- ★ r1m8 -->
     <div class="match" id="r1m8" data-next="r2m4">
       <div class="slot"><span class="name">P15</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
     </div>
 
+    <!-- 1回戦→2回戦へのデフォルト線 -->
+    <div class="round-lines">
+      <svg>
+        <!-- r1m1 & r1m2 → r2m1（横→縦→横の3本セット） -->
+        <line id="line-r1m1-r2m1-h1" x1="0" y1="30" x2="40" y2="30" />
+        <line id="line-r1m1-r2m1-v"  x1="40" y1="30" x2="40" y2="60" />
+        <line id="line-r1m1-r2m1-h2" x1="40" y1="60" x2="80" y2="60" />
+
+        <line id="line-r1m2-r2m1-h1" x1="0" y1="90" x2="40" y2="90" />
+        <line id="line-r1m2-r2m1-v"  x1="40" y1="90" x2="40" y2="60" />
+        <line id="line-r1m2-r2m1-h2" x1="40" y1="60" x2="80" y2="60" />
+
+        <!-- r1m3 & r1m4 → r2m2 -->
+        <line id="line-r1m3-r2m2-h1" x1="0" y1="150" x2="40" y2="150" />
+        <line id="line-r1m3-r2m2-v"  x1="40" y1="150" x2="40" y2="180" />
+        <line id="line-r1m3-r2m2-h2" x1="40" y1="180" x2="80" y2="180" />
+
+        <line id="line-r1m4-r2m2-h1" x1="0" y1="210" x2="40" y2="210" />
+        <line id="line-r1m4-r2m2-v"  x1="40" y1="210" x2="40" y2="180" />
+        <line id="line-r1m4-r2m2-h2" x1="40" y1="180" x2="80" y2="180" />
+
+        <!-- r1m5 & r1m6 → r2m3 -->
+        <line id="line-r1m5-r2m3-h1" x1="0" y1="270" x2="40" y2="270" />
+        <line id="line-r1m5-r2m3-v"  x1="40" y1="270" x2="40" y2="300" />
+        <line id="line-r1m5-r2m3-h2" x1="40" y1="300" x2="80" y2="300" />
+
+        <line id="line-r1m6-r2m3-h1" x1="0" y1="330" x2="40" y2="330" />
+        <line id="line-r1m6-r2m3-v"  x1="40" y1="330" x2="40" y2="300" />
+        <line id="line-r1m6-r2m3-h2" x1="40" y1="300" x2="80" y2="300" />
+
+        <!-- r1m7 & r1m8 → r2m4 -->
+        <line id="line-r1m7-r2m4-h1" x1="0" y1="390" x2="40" y2="390" />
+        <line id="line-r1m7-r2m4-v"  x1="40" y1="390" x2="40" y2="420" />
+        <line id="line-r1m7-r2m4-h2" x1="40" y1="420" x2="80" y2="420" />
+
+        <line id="line-r1m8-r2m4-h1" x1="0" y1="450" x2="40" y2="450" />
+        <line id="line-r1m8-r2m4-v"  x1="40" y1="450" x2="40" y2="420" />
+        <line id="line-r1m8-r2m4-h2" x1="40" y1="420" x2="80" y2="420" />
+      </svg>
+    </div>
   </div>
 
   <!-- 2回戦 -->
@@ -166,73 +237,63 @@
     <h2>2回戦</h2>
 
     <div class="match" id="r2m1" data-next="r3m1">
-      <div class="slot" data-prev="r1m1"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-prev="r1m2"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
+      <div class="slot" data-prev="r1m1"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r1m2"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
     </div>
 
     <div class="match" id="r2m2" data-next="r3m1">
-      <div class="slot" data-prev="r1m3"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-prev="r1m4"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
+      <div class="slot" data-prev="r1m3"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r1m4"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
     </div>
 
     <div class="match" id="r2m3" data-next="r3m2">
-      <div class="slot" data-prev="r1m5"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-prev="r1m6"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
+      <div class="slot" data-prev="r1m5"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r1m6"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
     </div>
 
     <div class="match" id="r2m4" data-next="r3m2">
-      <div class="slot" data-prev="r1m7"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-prev="r1m8"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
-        <line class="lh2" x1="60" y1="90" x2="160" y2="90" />
-      </svg>
-
-      <svg class="right-lines">
-        <line class="rh1" x1="160" y1="30" x2="220" y2="30" />
-        <line class="rv"  x1="220" y1="30" x2="220" y2="90" />
-        <line class="rh2" x1="220" y1="90" x2="320" y2="90" />
-      </svg>
+      <div class="slot" data-prev="r1m7"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r1m8"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
     </div>
 
+    <!-- 2回戦→準決勝への線 -->
+    <div class="round2-lines">
+      <svg>
+        <!-- r2m1 & r2m2 → r3m1 -->
+        <line id="line-r2m1-r3m1-h1" x1="0" y1="80" x2="40" y2="80" />
+        <line id="line-r2m1-r3m1-v"  x1="40" y1="80" x2="40" y2="140" />
+        <line id="line-r2m1-r3m1-h2" x1="40" y1="140" x2="80" y2="140" />
+
+        <line id="line-r2m2-r3m1-h1" x1="0" y1="200" x2="40" y2="200" />
+        <line id="line-r2m2-r3m1-v"  x1="40" y1="200" x2="40" y2="140" />
+        <line id="line-r2m2-r3m1-h2" x1="40" y1="140" x2="80" y2="140" />
+
+        <!-- r2m3 & r2m4 → r3m2 -->
+        <line id="line-r2m3-r3m2-h1" x1="0" y1="320" x2="40" y2="320" />
+        <line id="line-r2m3-r3m2-v"  x1="40" y1="320" x2="40" y2="380" />
+        <line id="line-r2m3-r3m2-h2" x1="40" y1="380" x2="80" y2="380" />
+
+        <line id="line-r2m4-r3m2-h1" x1="0" y1="440" x2="40" y2="440" />
+        <line id="line-r2m4-r3m2-v"  x1="40" y1="440" x2="40" y2="380" />
+        <line id="line-r2m4-r3m2-h2" x1="40" y1="380" x2="80" y2="380" />
+      </svg>
+    </div>
   </div>
 
   <!-- 準決勝 -->
@@ -240,9 +301,230 @@
     <h2>準決勝</h2>
 
     <div class="match" id="r3m1" data-next="final">
-      <div class="slot" data-prev="r2m1"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-prev="r2m2"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot" data-prev="r2m1"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r2m2"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+    </div>
 
-      <svg class="left-lines">
-        <line class="lh1" x1="0" y1="30" x2="60" y2="30" />
-        <line class="lv"  x1="60" y1="30" x2="60" y2="90" />
+    <div class="match" id="r3m2" data-next="final">
+      <div class="slot" data-prev="r2m3"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r2m4"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+    </div>
+
+    <!-- 準決勝→決勝への線 -->
+    <div class="round3-lines">
+      <svg>
+        <!-- r3m1 & r3m2 → final -->
+        <line id="line-r3m1-final-h1" x1="0" y1="100" x2="40" y2="100" />
+        <line id="line-r3m1-final-v"  x1="40" y1="100" x2="40" y2="160" />
+        <line id="line-r3m1-final-h2" x1="40" y1="160" x2="80" y2="160" />
+
+        <line id="line-r3m2-final-h1" x1="0" y1="220" x2="40" y2="220" />
+        <line id="line-r3m2-final-v"  x1="40" y1="220" x2="40" y2="160" />
+        <line id="line-r3m2-final-h2" x1="40" y1="160" x2="80" y2="160" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- 決勝 -->
+  <div class="round">
+    <h2>決勝</h2>
+
+    <div class="match" id="final">
+      <div class="slot" data-prev="r3m1"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+      <div class="slot" data-prev="r3m2"><span class="name"></span>
+        <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
+      </div>
+
+      <h3>優勝：<span id="champion"></span></h3>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("click", e => {
+  const btn = e.target;
+
+  // 勝ちボタン
+  if (btn.classList.contains("win")) {
+    const slot = btn.closest(".slot");
+    const match = btn.closest(".match");
+    const winnerName = slot.querySelector(".name").textContent;
+
+    const nextId = match.dataset.next;
+    if (nextId) {
+      const nextMatch = document.getElementById(nextId);
+      const nextSlots = nextMatch.querySelectorAll(".slot .name");
+      for (const ns of nextSlots) {
+        if (!ns.textContent) {
+          ns.textContent = winnerName;
+          break;
+        }
+      }
+    }
+
+    slot.dataset.winner = "true";
+
+    let line = match.querySelector(".win-line");
+    if (!line) {
+      line = document.createElement("div");
+      line.className = "win-line";
+      match.appendChild(line);
+    }
+    const slotRect = slot.getBoundingClientRect();
+    const matchRect = match.getBoundingClientRect();
+    const height = slotRect.top - matchRect.top;
+    line.style.height = height + "px";
+
+    match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
+
+    /* ★ 赤線：横＋縦＋次の横の3本セットを赤くする */
+    const mid = match.id;
+
+    // 1回戦 → 2回戦
+    if (mid === "r1m1") {
+      ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m2") {
+      ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m3") {
+      ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m4") {
+      ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m5") {
+      ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m6") {
+      ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m7") {
+      ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r1m8") {
+      ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+
+    // 2回戦 → 準決勝（2個セットの位置修正）
+    if (mid === "r2m1") {
+      ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r2m2") {
+      ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r2m3") {
+      ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r2m4") {
+      ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+
+    // 準決勝 → 決勝
+    if (mid === "r3m1") {
+      ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+    if (mid === "r3m2") {
+      ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
+    }
+
+    if (match.id === "final") {
+      document.getElementById("champion").textContent = winnerName;
+    }
+  }
+
+  // 戻すボタン
+  if (btn.classList.contains("undo")) {
+    const slot = btn.closest(".slot");
+    const match = btn.closest(".match");
+
+    slot.querySelector(".name").textContent = "";
+
+    const line = match.querySelector(".win-line");
+    if (line) line.remove();
+
+    match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
+
+    const prevMatchId = slot.dataset.prev;
+    if (prevMatchId) {
+      const prevMatch = document.getElementById(prevMatchId);
+      if (prevMatch) {
+        prevMatch.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
+      }
+    }
+
+    delete slot.dataset.winner;
+
+    /* ★ 赤線を元に戻す（横＋縦＋次の横の3本セット） */
+    const mid = match.id;
+
+    const clearSet = ids => ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("active");
+    });
+
+    if (mid === "r1m1") clearSet(["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
+    if (mid === "r1m2") clearSet(["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
+    if (mid === "r1m3") clearSet(["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
+    if (mid === "r1m4") clearSet(["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
+    if (mid === "r1m5") clearSet(["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
+    if (mid === "r1m6") clearSet(["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
+    if (mid === "r1m7") clearSet(["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
+    if (mid === "r1m8") clearSet(["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
+
+    if (mid === "r2m1") clearSet(["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
+    if (mid === "r2m2") clearSet(["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
+    if (mid === "r2m3") clearSet(["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
+    if (mid === "r2m4") clearSet(["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
+
+    if (mid === "r3m1") clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
+    if (mid === "r3m2") clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
+
+    if (match.id === "final") {
+      document.getElementById("champion").textContent = "";
+    }
+  }
+});
+</script>
+
+</body>
+</html>

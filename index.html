@@ -2,27 +2,27 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（縦型＋勝利ライン＋枝線＋位置調整）</title>
+<title>16人トーナメント（階段線＋勝利赤線）</title>
 <style>
   body { font-family: sans-serif; }
 
   .bracket {
     display: flex;
-    gap: 120px; /* 2回戦を中央に寄せるため広めに */
+    gap: 120px;
     align-items: flex-start;
   }
 
   .round {
     display: flex;
     flex-direction: column;
-    gap: 60px; /* 1回戦の高さを揃える */
+    gap: 60px;
     position: relative;
   }
 
   .match {
     position: relative;
     padding-left: 20px;
-    min-height: 80px; /* 1試合の高さを固定して中央寄せしやすくする */
+    min-height: 80px;
   }
 
   .slot {
@@ -45,6 +45,7 @@
     cursor: pointer;
   }
 
+  /* 勝利ライン（縦） */
   .win-line {
     position: absolute;
     width: 3px;
@@ -60,91 +61,99 @@
     pointer-events: none;
   }
 
-  /* トーナメント枝線（黒） */
-  .branch {
+  /* 階段線（L字線） */
+  .step-line {
     position: absolute;
+    left: 140px; /* 名前の右側 */
+    top: 50%;
     width: 40px;
     height: 2px;
     background: black;
-    left: -40px;
-    top: 50%;
   }
 
-  /* 2回戦を1回戦の間に配置する */
+  .step-line::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -38px;
+    width: 2px;
+    height: 40px;
+    background: black;
+  }
+
+  /* 勝ったら赤くする */
+  .step-line.active,
+  .step-line.active::after {
+    background: red !important;
+  }
+
+  /* 2回戦を1回戦の間に配置 */
   #r2m1 { top: 40px; }
   #r2m2 { top: 40px; }
   #r2m3 { top: 40px; }
   #r2m4 { top: 40px; }
 
-  /* 準決勝も中央寄せ */
+  /* 準決勝 */
   #r3m1 { top: 60px; }
   #r3m2 { top: 60px; }
 
-  /* 決勝はさらに中央 */
+  /* 決勝 */
   #final { top: 80px; }
 
 </style>
 </head>
 <body>
 
-<h1>16人トーナメント（縦型＋勝利ライン＋枝線）</h1>
+<h1>16人トーナメント（階段線＋勝利赤線）</h1>
 
 <div class="bracket">
 
-  <!-- 1回戦 -->
+  <!-- 1回戦（左線なし） -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
     <div class="match" id="r1m1" data-next="r2m1">
       <div class="slot"><span class="name">P1</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P2</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m2" data-next="r2m1">
       <div class="slot"><span class="name">P3</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P4</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m3" data-next="r2m2">
       <div class="slot"><span class="name">P5</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P6</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m4" data-next="r2m2">
       <div class="slot"><span class="name">P7</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P8</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m5" data-next="r2m3">
       <div class="slot"><span class="name">P9</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P10</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m6" data-next="r2m3">
       <div class="slot"><span class="name">P11</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P12</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m7" data-next="r2m4">
       <div class="slot"><span class="name">P13</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P14</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
 
     <div class="match" id="r1m8" data-next="r2m4">
       <div class="slot"><span class="name">P15</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
-      <div class="branch"></div>
     </div>
   </div>
 
-  <!-- 2回戦 -->
+  <!-- 2回戦（階段線あり） -->
   <div class="round">
     <h2>2回戦</h2>
 
@@ -155,7 +164,7 @@
       <div class="slot" data-prev="r1m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
 
     <div class="match" id="r2m2" data-next="r3m1">
@@ -165,7 +174,7 @@
       <div class="slot" data-prev="r1m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
 
     <div class="match" id="r2m3" data-next="r3m2">
@@ -175,7 +184,7 @@
       <div class="slot" data-prev="r1m6"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
 
     <div class="match" id="r2m4" data-next="r3m2">
@@ -185,7 +194,7 @@
       <div class="slot" data-prev="r1m8"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
   </div>
 
@@ -200,7 +209,7 @@
       <div class="slot" data-prev="r2m2"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
 
     <div class="match" id="r3m2" data-next="final">
@@ -210,7 +219,7 @@
       <div class="slot" data-prev="r2m4"><span class="name"></span>
         <button class="btn win">勝ち</button><button class="btn undo">戻す</button>
       </div>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
   </div>
 
@@ -227,7 +236,7 @@
       </div>
 
       <h3>優勝：<span id="champion"></span></h3>
-      <div class="branch"></div>
+      <div class="step-line"></div>
     </div>
   </div>
 
@@ -270,6 +279,10 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
+    /* 階段線を赤くする */
+    const step = match.querySelector(".step-line");
+    if (step) step.classList.add("active");
+
     if (match.id === "final") {
       document.getElementById("champion").textContent = winnerName;
     }
@@ -296,6 +309,10 @@ document.addEventListener("click", e => {
     }
 
     delete slot.dataset.winner;
+
+    /* 階段線の赤を解除 */
+    const step = match.querySelector(".step-line");
+    if (step) step.classList.remove("active");
 
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";

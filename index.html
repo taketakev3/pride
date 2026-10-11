@@ -253,15 +253,17 @@ document.addEventListener("click", e => {
     // この試合の勝ちボタン復活
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
-    // このスロットが勝っていた場合だけ、対応する前の試合の勝ちボタンを復活
-    if (slot.dataset.winner) {
-      const prevMatchId = slot.dataset.prev;
+    // 対応する「1つ前の試合」の勝ちボタンを必ず復活
+    const prevMatchId = slot.dataset.prev;
+    if (prevMatchId) {
       const prevMatch = document.getElementById(prevMatchId);
       if (prevMatch) {
         prevMatch.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
       }
-      delete slot.dataset.winner;
     }
+
+    // このスロットの勝ちフラグは消しておく
+    delete slot.dataset.winner;
 
     // 決勝の戻すなら優勝表示も消す
     if (match.id === "final") {

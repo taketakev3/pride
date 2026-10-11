@@ -1,4 +1,6 @@
-<html lang="ja"><head>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
 <meta charset="UTF-8">
 <title>16人トーナメント（シンプル固定進行）</title>
 <style>
@@ -42,11 +44,14 @@
     margin: 6px 0;
   }
 
+  /* ★ 空欄でも枠が常に表示されるようにする */
   .name {
     width: 110px;
     padding: 4px;
     border: 1px solid #aaa;
     background: #fff;
+    min-height: 18px; /* ←これで空欄でも枠が見える */
+    display: inline-block;
   }
 
   .btn {
@@ -77,99 +82,95 @@
     <h2>1回戦</h2>
 
     <div class="match" id="r1m1">
-      <div class="slot"><span class="name">P1</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P2</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P1</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P2</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m2">
-      <div class="slot"><span class="name">P3</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P4</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P3</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P4</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m3">
-      <div class="slot"><span class="name">P5</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P6</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P5</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P6</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m4">
-      <div class="slot"><span class="name">P7</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P8</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P7</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P8</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m5">
-      <div class="slot"><span class="name">P9</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P10</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P9</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P10</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m6">
-      <div class="slot"><span class="name">P11</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P12</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P11</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P12</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m7">
-      <div class="slot"><span class="name">P13</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P14</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P13</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P14</span><button class="btn win">勝ち</button></div>
     </div>
 
     <div class="match" id="r1m8">
-      <div class="slot"><span class="name">P15</span><button class="btn win disabled">勝ち</button></div>
-      <div class="slot"><span class="name">P16</span><button class="btn win disabled">勝ち</button></div>
+      <div class="slot"><span class="name">P15</span><button class="btn win">勝ち</button></div>
+      <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
     </div>
   </div>
 
   <!-- 2回戦 -->
-  <div class="round" id="round2" style="
-">
+  <div class="round" id="round2">
     <h2>2回戦</h2>
 
     <div class="match" id="r2m1">
-      <div class="slot" data-from="r1m1"><span class="name">P1</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r1m2"><span class="name">P3</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
 
-    <div style="padding-top: 10rem;"><div class="match" id="r2m2" style="
-">
-      <div class="slot" data-from="r1m3"><span class="name">P5</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r1m4"><span class="name">P7</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
+    <div class="match" id="r2m2">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
+
+    <div class="match" id="r2m3">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
-    
 
-    <div style="padding-top: 10rem;"><div class="match" id="r2m3">
-      <div class="slot" data-from="r1m5"><span class="name">P9</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r1m6"><span class="name">P11</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-    </div></div>
-
-    <div style="padding-top: 10rem;"><div class="match" id="r2m4">
-      <div class="slot" data-from="r1m7"><span class="name">P13</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r1m8"><span class="name">P15</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-    </div></div>
+    <div class="match" id="r2m4">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+    </div>
   </div>
 
   <!-- 準決勝 -->
   <div class="round" id="round3">
     <h2>準決勝</h2>
 
-    <div style="padding-top: 7rem;"><div class="match" id="r3m1">
-      <div class="slot" data-from="r2m1"><span class="name">P3</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r2m2"><span class="name">P5</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-    </div></div>
+    <div class="match" id="r3m1">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+    </div>
 
-    <div style="padding-top: 29rem;"><div class="match" id="r3m2">
-      <div class="slot" data-from="r2m3"><span class="name">P9</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r2m4"><span class="name">P15</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-    </div></div>
+    <div class="match" id="r3m2">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+    </div>
   </div>
 
   <!-- 決勝 -->
   <div class="round" id="final-round">
     <h2>決勝</h2>
 
-    <div style="padding-top: 20rem;"><div class="match" id="final">
-      <div class="slot" data-from="r3m1"><span class="name">P3</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <div class="slot" data-from="r3m2"><span class="name">P9</span><button class="btn win disabled">勝ち</button><button class="btn undo">戻す</button></div>
-      <h3>優勝：<span id="champion">P3</span></h3>
-    </div></div>
+    <div class="match" id="final">
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
+      <h3>優勝：<span id="champion"></span></h3>
+    </div>
   </div>
 
 </div>
@@ -217,7 +218,6 @@ document.addEventListener("click", e => {
       const target = nextSlots[info.slot];
 
       target.textContent = winnerName;
-      target.classList.remove("empty");
       target.closest(".slot").dataset.from = match.id;
     }
 
@@ -229,7 +229,6 @@ document.addEventListener("click", e => {
   /* 戻すボタン */
   if (btn.classList.contains("undo")) {
     nameEl.textContent = "";
-    nameEl.classList.add("empty");
 
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
@@ -248,6 +247,5 @@ document.addEventListener("click", e => {
 });
 </script>
 
-
-
-</body></html>
+</body>
+</html>

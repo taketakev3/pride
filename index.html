@@ -6,14 +6,12 @@
 <style>
   body { font-family: sans-serif; }
 
-  /* 横にラウンドを並べる */
   .bracket {
     display: flex;
     gap: 60px;
     align-items: flex-start;
   }
 
-  /* 各ラウンドは縦に試合を並べる */
   .round {
     display: flex;
     flex-direction: column;
@@ -45,15 +43,15 @@
     cursor: pointer;
   }
 
-  /* 勝利ライン（縦方向） */
+  /* 勝利ライン（上方向に伸びる） */
   .win-line {
     position: absolute;
     width: 3px;
     background: red;
     left: 0px;
-    top: 0;
+    bottom: 0;
     height: 0;
-    transition: height 0.3s;
+    transition: height 0.4s ease-out;
   }
 
   .disabled {
@@ -68,101 +66,84 @@
 
 <div class="bracket">
 
-  <!-- 1回戦 -->
+  <!-- 1回戦（undo削除済み） -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
-    <!-- 8試合 -->
     <div class="match" data-next="r2m1">
       <div class="slot"><span class="name">P1</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P2</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m1">
       <div class="slot"><span class="name">P3</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P4</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m2">
       <div class="slot"><span class="name">P5</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P6</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m2">
       <div class="slot"><span class="name">P7</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P8</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m3">
       <div class="slot"><span class="name">P9</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P10</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m3">
       <div class="slot"><span class="name">P11</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P12</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m4">
       <div class="slot"><span class="name">P13</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P14</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
 
     <div class="match" data-next="r2m4">
       <div class="slot"><span class="name">P15</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
       <div class="slot"><span class="name">P16</span>
         <button class="btn win">勝ち</button>
-        <button class="btn undo">戻す</button>
       </div>
     </div>
   </div>
 
-  <!-- 2回戦 -->
+  <!-- 2回戦（undoあり） -->
   <div class="round">
     <h2>2回戦</h2>
 
@@ -282,14 +263,20 @@ document.addEventListener("click", e => {
       }
     }
 
-    // 勝利ライン生成
+    // 勝利ライン（上方向に伸びる）
     let line = match.querySelector(".win-line");
     if (!line) {
       line = document.createElement("div");
       line.className = "win-line";
       match.appendChild(line);
     }
-    line.style.height = "40px";
+
+    // 勝者のスロット位置を取得して線の高さを決定
+    const slotRect = slot.getBoundingClientRect();
+    const matchRect = match.getBoundingClientRect();
+    const height = slotRect.top - matchRect.top;
+
+    line.style.height = height + "px";
 
     // ボタン無効化
     const winButtons = match.querySelectorAll(".win");
@@ -305,7 +292,7 @@ document.addEventListener("click", e => {
     }
   }
 
-  // 戻すボタン
+  // 戻すボタン（1回戦には存在しない）
   if (btn.classList.contains("undo")) {
     const match = btn.closest(".match");
 

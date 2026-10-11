@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（完全位置修正＋階段線＋アニメーション）</title>
+<title>16人トーナメント（位置修正＋階段線＋アニメーション）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -61,7 +61,7 @@
     pointer-events: none;
   }
 
-  /* 階段線（L字） */
+  /* 階段線（L字）＋アニメーション */
   .step-line {
     position: absolute;
     left: 150px;
@@ -94,16 +94,26 @@
     background: red;
   }
 
-  /* ★ ここが今回の重要ポイント：中央寄せ */
-  .round:nth-child(2) .match { transform: translateY(30px); }
-  .round:nth-child(3) .match { transform: translateY(60px); }
-  .round:nth-child(4) .match { transform: translateY(90px); }
+  /* ★ ここで「何回戦の間」に来るように個別調整 */
+
+  /* 2回戦：r2m1 は r1m1 と r1m2 の間、r2m2 は r1m3 と r1m4 の間… */
+  #r2m1 { margin-top: 30px; }
+  #r2m2 { margin-top: 90px; }
+  #r2m3 { margin-top: 150px; }
+  #r2m4 { margin-top: 210px; }
+
+  /* 準決勝：r3m1 は r2m1 と r2m2 の間、r3m2 は r2m3 と r2m4 の間 */
+  #r3m1 { margin-top: 60px; }
+  #r3m2 { margin-top: 180px; }
+
+  /* 決勝：final は r3m1 と r3m2 の間 */
+  #final { margin-top: 120px; }
 
 </style>
 </head>
 <body>
 
-<h1>16人トーナメント（完全位置修正＋階段線＋アニメーション）</h1>
+<h1>16人トーナメント（位置修正＋階段線＋アニメーション）</h1>
 
 <div class="bracket">
 

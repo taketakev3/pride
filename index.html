@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント（修正版）</title>
+<title>16人トーナメント（修正版 固定進行・赤線反映）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -136,7 +136,7 @@
 </head>
 <body>
 
-<h1>16人トーナメント（修正版）</h1>
+<h1>16人トーナメント（修正版 固定進行・赤線反映）</h1>
 
 <div class="bracket">
 
@@ -347,15 +347,81 @@
 
 <script>
 /*
-  修正点まとめ
-  - 左にあった win-line（縦の赤バー）を削除（CSS/JSともに扱わない）
-  - 各 match の「上 or 下 が勝ったか」を判定して、対応する SVG の3本セット（横→縦→横）を赤にする
-  - r1m1/r1m2 → r2m1 のように勝者の進行先を固定（HTML の data-next で既に固定）
-  - undo は名前を消してボタンを復活させ、該当する可能性のある全ての線セットを消す（安全策）
+  修正内容
+  - 左の win-line（縦バー）は削除（作成・操作しない）
+  - 各 match の勝者（上/下）に応じて対応する SVG の3本セットを赤にする
+  - 進行先は HTML の data-next 属性で固定（r1m1/r1m2→r2m1, r1m3/r1m4→r2m2, ...）
+  - undo は安全策で関連する全ての線セットを消す（固定進行に合わせたセット）
 */
 
 document.addEventListener("click", e => {
   const btn = e.target;
+
+  // マップ：matchId -> { top: [ids], bottom: [ids] }
+  // top = 上のslotが勝ったときに赤くする3本、bottom = 下のslotが勝ったときに赤くする3本
+  const lineMap = {
+    // 1回戦 -> 2回戦
+    r1m1: {
+      top: ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"],
+      bottom: ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]
+    },
+    r1m2: {
+      top: ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"],
+      bottom: ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]
+    },
+    r1m3: {
+      top: ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"],
+      bottom: ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]
+    },
+    r1m4: {
+      top: ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"],
+      bottom: ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]
+    },
+    r1m5: {
+      top: ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"],
+      bottom: ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]
+    },
+    r1m6: {
+      top: ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"],
+      bottom: ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]
+    },
+    r1m7: {
+      top: ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"],
+      bottom: ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]
+    },
+    r1m8: {
+      top: ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"],
+      bottom: ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]
+    },
+
+    // 2回戦 -> 準決勝
+    r2m1: {
+      top: ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"],
+      bottom: ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]
+    },
+    r2m2: {
+      top: ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"],
+      bottom: ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]
+    },
+    r2m3: {
+      top: ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"],
+      bottom: ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]
+    },
+    r2m4: {
+      top: ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"],
+      bottom: ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]
+    },
+
+    // 準決勝 -> 決勝
+    r3m1: {
+      top: ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"],
+      bottom: ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]
+    },
+    r3m2: {
+      top: ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"],
+      bottom: ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]
+    }
+  };
 
   // 勝ちボタン
   if (btn.classList.contains("win")) {
@@ -384,7 +450,6 @@ document.addEventListener("click", e => {
     // どっちのslotが勝ったか判定
     const slots = match.querySelectorAll(".slot");
     const isTop = slot === slots[0];
-    // const isBottom = slot === slots[1]; // 今回は isTop の真偽だけで分岐する
 
     // 赤線を付けるユーティリティ
     const activate = ids => ids.forEach(id=>{
@@ -393,85 +458,9 @@ document.addEventListener("click", e => {
     });
 
     const mid = match.id;
-
-    // 1回戦 → 2回戦（上が勝ったら上側の3本、下が勝ったら下側の3本）
-    if (mid === "r1m1") {
-      activate(isTop
-        ? ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]
-        : ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
-    }
-    if (mid === "r1m2") {
-      activate(isTop
-        ? ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]
-        : ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
-    }
-
-    if (mid === "r1m3") {
-      activate(isTop
-        ? ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]
-        : ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
-    }
-    if (mid === "r1m4") {
-      activate(isTop
-        ? ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]
-        : ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
-    }
-
-    if (mid === "r1m5") {
-      activate(isTop
-        ? ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]
-        : ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
-    }
-    if (mid === "r1m6") {
-      activate(isTop
-        ? ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]
-        : ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
-    }
-
-    if (mid === "r1m7") {
-      activate(isTop
-        ? ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]
-        : ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
-    }
-    if (mid === "r1m8") {
-      activate(isTop
-        ? ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]
-        : ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
-    }
-
-    // 2回戦 → 準決勝
-    if (mid === "r2m1") {
-      activate(isTop
-        ? ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]
-        : ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
-    }
-    if (mid === "r2m2") {
-      activate(isTop
-        ? ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]
-        : ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
-    }
-
-    if (mid === "r2m3") {
-      activate(isTop
-        ? ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]
-        : ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
-    }
-    if (mid === "r2m4") {
-      activate(isTop
-        ? ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]
-        : ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
-    }
-
-    // 準決勝 → 決勝
-    if (mid === "r3m1") {
-      activate(isTop
-        ? ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]
-        : ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
-    }
-    if (mid === "r3m2") {
-      activate(isTop
-        ? ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]
-        : ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
+    const mapEntry = lineMap[mid];
+    if (mapEntry) {
+      activate(isTop ? mapEntry.top : mapEntry.bottom);
     }
 
     // 決勝の優勝表示（final は data-next を持たない）
@@ -500,31 +489,17 @@ document.addEventListener("click", e => {
       }
     }
 
-    // 赤線を元に戻す（安全のため、該当する可能性のある全セットを消す）
+    // 赤線を元に戻す（安全のため、lineMap にある全セットを消す）
     const clearSet = ids => ids.forEach(id=>{
       const el = document.getElementById(id);
       if (el) el.classList.remove("active");
     });
 
-    // 1回戦
-    clearSet(["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
-    clearSet(["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
-    clearSet(["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
-    clearSet(["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
-    clearSet(["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
-    clearSet(["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
-    clearSet(["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
-    clearSet(["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
-
-    // 2回戦
-    clearSet(["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
-    clearSet(["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
-    clearSet(["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
-    clearSet(["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
-
-    // 準決勝
-    clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
-    clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
+    for (const key in lineMap) {
+      const entry = lineMap[key];
+      clearSet(entry.top);
+      clearSet(entry.bottom);
+    }
 
     // 決勝の優勝表示クリア
     if (match.id === "final") {

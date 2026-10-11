@@ -4,9 +4,9 @@
 <style>
   body { font-family: sans-serif; padding: 20px; }
   h1 { margin-bottom: 20px; }
-  .bracket { display: flex; gap: 120px; align-items: flex-start; }
-  .round { display: flex; flex-direction: column; gap: 40px; position: relative; }
   /* 位置調整（元のpadding位置を維持） */
+  .bracket { display: flex; gap: 120px; align-items: flex-start; position: relative; } /* position:relative を追加（表示のみ） */
+  .round { display: flex; flex-direction: column; gap: 40px; position: relative; }
   #round2 { margin-top: 60px; }
   #round3 { margin-top: 100px; }
   #final-round { margin-top: 140px; }
@@ -33,6 +33,23 @@
   .disabled { opacity: 0.5; pointer-events: none; }
 
   #champion { font-weight: bold; color: #c33; margin-top:8px; display:block; }
+
+  /* --- 追加: 表示専用の線（SVG） --- */
+  /* pointer-events:none にして既存の操作に影響を与えない */
+  .connector {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .connector path, .connector line {
+    stroke: #222;
+    stroke-width: 3;
+    fill: none;
+  }
 </style>
 </head>
 <body>
@@ -40,6 +57,59 @@
 <h1>16人トーナメント（固定進行・入力対応・無効化安定版）</h1>
 
 <div class="bracket">
+
+  <!-- 追加した表示専用SVG（線のみ） -->
+  <svg class="connector" viewBox="0 0 1200 1200" preserveAspectRatio="none" aria-hidden="true">
+    <!-- 1回戦 -> 2回戦 の接続（左列から右列へ） -->
+    <!-- r1m1 -->
+    <path d="M220 70 H320 V140 H420" />
+    <path d="M220 130 H320 V200 H420" />
+
+    <!-- r1m2 -->
+    <path d="M220 210 H320 V140 H420" />
+    <path d="M220 270 H320 V200 H420" />
+
+    <!-- r1m3 -->
+    <path d="M220 350 H320 V420 H520" />
+    <path d="M220 410 H320 V480 H520" />
+
+    <!-- r1m4 -->
+    <path d="M220 490 H320 V420 H520" />
+    <path d="M220 550 H320 V480 H520" />
+
+    <!-- r1m5 -->
+    <path d="M220 630 H320 V700 H720" />
+    <path d="M220 690 H320 V760 H720" />
+
+    <!-- r1m6 -->
+    <path d="M220 770 H320 V700 H720" />
+    <path d="M220 830 H320 V760 H720" />
+
+    <!-- r1m7 -->
+    <path d="M220 910 H320 V980 H920" />
+    <path d="M220 970 H320 V1040 H920" />
+
+    <!-- r1m8 -->
+    <path d="M220 1030 H320 V980 H920" />
+    <path d="M220 1090 H320 V1040 H920" />
+
+    <!-- 2回戦 -> 準決勝 -->
+    <path d="M520 170 H620 V260 H720" />
+    <path d="M520 230 H620 V320 H720" />
+
+    <path d="M520 450 H620 V260 H720" />
+    <path d="M520 510 H620 V320 H720" />
+
+    <path d="M720 730 H820 V820 H920" />
+    <path d="M720 790 H820 V880 H920" />
+
+    <path d="M720 1010 H820 V820 H920" />
+    <path d="M720 1070 H820 V880 H920" />
+
+    <!-- 準決勝 -> 決勝 -->
+    <path d="M920 290 H1020 V560 H1120" />
+    <path d="M920 850 H1020 V560 H1120" />
+  </svg>
 
   <!-- 1回戦（入力可能） -->
   <div class="round" id="round1">

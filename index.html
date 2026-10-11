@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<title>16人トーナメント（表示安定版）</title>
+<meta charset="UTF-8">
+<title>16人トーナメント（固定進行・入力対応・無効化安定版）</title>
 <style>
-  /* 全体 */
   body { font-family: sans-serif; padding: 20px; }
   h1 { margin-bottom: 20px; }
-
   .bracket { display: flex; gap: 120px; align-items: flex-start; }
   .round { display: flex; flex-direction: column; gap: 40px; position: relative; }
 
@@ -21,44 +19,43 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     background: #fafafa;
-    width: 260px;            /* 少し広め */
+    width: 220px;
     box-sizing: border-box;
   }
 
-  /* スロット固定高さ：入力や表示が変わっても高さが変わらない */
+  /* スロットは固定高さにして中身が変わっても高さが変わらないようにする */
   .slot {
     display:flex;
     align-items:center;
     justify-content:space-between;
     margin:6px 0;
     gap:8px;
-    height: 52px;            /* 高さを大きめに固定 */
-    min-height: 52px;
+    height: 36px;               /* 固定高さ */
+    min-height: 36px;
     box-sizing: border-box;
   }
 
-  /* 1回戦の入力欄（大きめに固定） */
+  /* 1回戦の入力欄（サイズ固定） */
   .name-input {
-    width: 180px;            /* 大きめ */
-    height: 36px;            /* 高さ固定 */
-    line-height: 36px;
-    padding: 4px 8px;
+    width: 120px;
+    height: 24px;               /* 固定高さ */
+    line-height: 24px;
+    padding: 4px;
     border: 1px solid #aaa;
     background: #fff;
     box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 14px;
   }
 
-  /* 2回戦以降の表示枠（span）も同じ大きさに固定 */
+  /* 2回戦以降の表示枠（span）も同じサイズに固定 */
   .name {
     display: inline-block;
-    width: 180px;            /* 入力欄と同じ幅 */
-    height: 36px;            /* 入力欄と同じ高さ */
-    line-height: 36px;
-    padding: 4px 8px;
+    width: 120px;
+    height: 24px;               /* 固定高さ */
+    line-height: 24px;
+    padding: 4px 2px;
     border: 1px solid #aaa;
     background: #fff;
     box-sizing: border-box;
@@ -66,25 +63,9 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     vertical-align: middle;
-    font-size: 14px;
   }
 
-  /* ボタンは小さめに固定（元の見た目） */
-  .btn {
-    padding: 4px 6px;
-    font-size: 12px;
-    cursor: pointer;
-    height: 30px;
-    line-height: 18px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    background: #fff;
-    border: 1px solid #bbb;
-  }
-
-  .btn.win { border-color:#d66; color:#900; }
-  .btn.undo { border-color:#66a; color:#165; }
-
+  .btn { padding: 4px 6px; font-size: 12px; cursor: pointer; }
   .disabled { opacity: 0.5; pointer-events: none; }
 
   #champion-name { font-weight: bold; color: #c33; margin-top:8px; display:inline-block; }
@@ -92,7 +73,7 @@
 </head>
 <body>
 
-<h1>16人トーナメント（表示安定版）</h1>
+<h1>16人トーナメント（固定進行・入力対応・無効化安定版）</h1>
 
 <div class="bracket">
 
@@ -318,7 +299,7 @@ function clearDownstream(fromMatchId) {
   });
 }
 
-/* クリック処理（処理は一切変更していません） */
+/* クリック処理 */
 document.addEventListener("click", e => {
   const btn = e.target;
   if (!btn.classList.contains("win") && !btn.classList.contains("undo")) return;

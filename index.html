@@ -138,6 +138,11 @@
   .round:nth-child(3) { margin-top: 60px; }  /* 準決勝 */
   .round:nth-child(4) { margin-top: 90px; }  /* 決勝 */
 
+  /* 優勝表示 */
+  #champion {
+    font-weight: bold;
+    color: #c33;
+  }
 </style>
 </head>
 <body>
@@ -388,83 +393,97 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
+    /* ★ どっちのslotが勝ったか判定 */
+    const slots = match.querySelectorAll(".slot");
+    const isTop = slot === slots[0];
+    const isBottom = slot === slots[1];
+
     /* ★ 赤線：横＋縦＋次の横の3本セットを赤くする */
     const mid = match.id;
 
+    const activate = ids => ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if (el) el.classList.add("active");
+    });
+
     // 1回戦 → 2回戦
     if (mid === "r1m1") {
-      ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]
+        : ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
     }
     if (mid === "r1m2") {
-      ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m3") {
-      ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m4") {
-      ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m5") {
-      ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m6") {
-      ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m7") {
-      ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
-    }
-    if (mid === "r1m8") {
-      ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]
+        : ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
     }
 
-    // 2回戦 → 準決勝（2個セットの位置修正）
+    if (mid === "r1m3") {
+      activate(isTop
+        ? ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]
+        : ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
+    }
+    if (mid === "r1m4") {
+      activate(isTop
+        ? ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]
+        : ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
+    }
+
+    if (mid === "r1m5") {
+      activate(isTop
+        ? ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]
+        : ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
+    }
+    if (mid === "r1m6") {
+      activate(isTop
+        ? ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]
+        : ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
+    }
+
+    if (mid === "r1m7") {
+      activate(isTop
+        ? ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]
+        : ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
+    }
+    if (mid === "r1m8") {
+      activate(isTop
+        ? ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]
+        : ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
+    }
+
+    // 2回戦 → 準決勝
     if (mid === "r2m1") {
-      ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]
+        : ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
     }
     if (mid === "r2m2") {
-      ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]
+        : ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
     }
+
     if (mid === "r2m3") {
-      ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]
+        : ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
     }
     if (mid === "r2m4") {
-      ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]
+        : ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
     }
 
     // 準決勝 → 決勝
     if (mid === "r3m1") {
-      ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]
+        : ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
     }
     if (mid === "r3m2") {
-      ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"].forEach(id=>{
-        document.getElementById(id).classList.add("active");
-      });
+      activate(isTop
+        ? ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]
+        : ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
     }
 
     if (match.id === "final") {
@@ -494,30 +513,31 @@ document.addEventListener("click", e => {
 
     delete slot.dataset.winner;
 
-    /* ★ 赤線を元に戻す（横＋縦＋次の横の3本セット） */
-    const mid = match.id;
-
+    /* ★ 赤線を元に戻す */
     const clearSet = ids => ids.forEach(id=>{
       const el = document.getElementById(id);
       if (el) el.classList.remove("active");
     });
 
-    if (mid === "r1m1") clearSet(["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
-    if (mid === "r1m2") clearSet(["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
-    if (mid === "r1m3") clearSet(["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
-    if (mid === "r1m4") clearSet(["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
-    if (mid === "r1m5") clearSet(["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
-    if (mid === "r1m6") clearSet(["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
-    if (mid === "r1m7") clearSet(["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
-    if (mid === "r1m8") clearSet(["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
+    // 1回戦
+    clearSet(["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
+    clearSet(["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
+    clearSet(["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
+    clearSet(["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
+    clearSet(["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
+    clearSet(["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
+    clearSet(["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
+    clearSet(["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
 
-    if (mid === "r2m1") clearSet(["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
-    if (mid === "r2m2") clearSet(["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
-    if (mid === "r2m3") clearSet(["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
-    if (mid === "r2m4") clearSet(["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
+    // 2回戦
+    clearSet(["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
+    clearSet(["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
+    clearSet(["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
+    clearSet(["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
 
-    if (mid === "r3m1") clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
-    if (mid === "r3m2") clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
+    // 準決勝
+    clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
+    clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
 
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";

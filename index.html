@@ -61,14 +61,13 @@
     pointer-events: none;
   }
 
-  /* ★ デフォルトのトーナメント線（スクショ風） */
-  /* 1回戦 → 2回戦への線（左側） */
+  /* ★ デフォルトのトーナメント線（1回戦→2回戦） */
   .round-lines {
     position: absolute;
     left: 140px; /* 名前の右あたりから線を出す */
     top: 40px;
-    width: 100px;
-    height: 600px;
+    width: 120px;
+    height: 520px;
     pointer-events: none;
   }
 
@@ -86,47 +85,58 @@
     stroke: red;
   }
 
-  /* 2回戦 → 準決勝、準決勝 → 決勝も同じように線を描画 */
+  /* 2回戦→準決勝 */
   .round2-lines {
     position: absolute;
     left: 140px;
     top: 70px;
-    width: 100px;
-    height: 540px;
+    width: 120px;
+    height: 420px;
     pointer-events: none;
   }
 
+  .round2-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .round2-lines line {
+    stroke: black;
+    stroke-width: 3;
+  }
+
+  .round2-lines line.active {
+    stroke: red;
+  }
+
+  /* 準決勝→決勝 */
   .round3-lines {
     position: absolute;
     left: 140px;
     top: 100px;
-    width: 100px;
-    height: 480px;
+    width: 120px;
+    height: 260px;
     pointer-events: none;
   }
 
-  .round2-lines svg,
   .round3-lines svg {
     width: 100%;
     height: 100%;
   }
 
-  .round2-lines line,
   .round3-lines line {
     stroke: black;
     stroke-width: 3;
   }
 
-  .round2-lines line.active,
   .round3-lines line.active {
     stroke: red;
   }
 
-  /* ★ 位置調整：何回戦の「間」に来るように */
-  /* 2回戦のラウンド全体を少し下げて、1回戦の間に見えるようにする */
-  .round:nth-child(2) { margin-top: 30px; }
-  .round:nth-child(3) { margin-top: 60px; }
-  .round:nth-child(4) { margin-top: 90px; }
+  /* ラウンド全体の縦位置調整（何回戦の間に来るように） */
+  .round:nth-child(2) { margin-top: 30px; }  /* 2回戦 */
+  .round:nth-child(3) { margin-top: 60px; }  /* 準決勝 */
+  .round:nth-child(4) { margin-top: 90px; }  /* 決勝 */
 
 </style>
 </head>
@@ -180,44 +190,44 @@
       <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <!-- 1回戦→2回戦へのデフォルト線（スクショ風） -->
+    <!-- 1回戦→2回戦へのデフォルト線 -->
     <div class="round-lines">
       <svg>
-        <!-- r1m1 & r1m2 → r2m1 -->
-        <line id="line-r1m1-r2m1" x1="0" y1="20" x2="40" y2="20" />
-        <line x1="40" y1="20" x2="40" y2="50" />
-        <line x1="40" y1="50" x2="80" y2="50" />
+        <!-- r1m1 & r1m2 → r2m1（横→縦→横の3本セット） -->
+        <line id="line-r1m1-r2m1-h1" x1="0" y1="30" x2="40" y2="30" />
+        <line id="line-r1m1-r2m1-v"  x1="40" y1="30" x2="40" y2="60" />
+        <line id="line-r1m1-r2m1-h2" x1="40" y1="60" x2="80" y2="60" />
 
-        <line id="line-r1m2-r2m1" x1="0" y1="80" x2="40" y2="80" />
-        <line x1="40" y1="80" x2="40" y2="50" />
-        <line x1="40" y1="50" x2="80" y2="50" />
+        <line id="line-r1m2-r2m1-h1" x1="0" y1="90" x2="40" y2="90" />
+        <line id="line-r1m2-r2m1-v"  x1="40" y1="90" x2="40" y2="60" />
+        <line id="line-r1m2-r2m1-h2" x1="40" y1="60" x2="80" y2="60" />
 
         <!-- r1m3 & r1m4 → r2m2 -->
-        <line id="line-r1m3-r2m2" x1="0" y1="140" x2="40" y2="140" />
-        <line x1="40" y1="140" x2="40" y2="170" />
-        <line x1="40" y1="170" x2="80" y2="170" />
+        <line id="line-r1m3-r2m2-h1" x1="0" y1="150" x2="40" y2="150" />
+        <line id="line-r1m3-r2m2-v"  x1="40" y1="150" x2="40" y2="180" />
+        <line id="line-r1m3-r2m2-h2" x1="40" y1="180" x2="80" y2="180" />
 
-        <line id="line-r1m4-r2m2" x1="0" y1="200" x2="40" y2="200" />
-        <line x1="40" y1="200" x2="40" y2="170" />
-        <line x1="40" y1="170" x2="80" y2="170" />
+        <line id="line-r1m4-r2m2-h1" x1="0" y1="210" x2="40" y2="210" />
+        <line id="line-r1m4-r2m2-v"  x1="40" y1="210" x2="40" y2="180" />
+        <line id="line-r1m4-r2m2-h2" x1="40" y1="180" x2="80" y2="180" />
 
         <!-- r1m5 & r1m6 → r2m3 -->
-        <line id="line-r1m5-r2m3" x1="0" y1="260" x2="40" y2="260" />
-        <line x1="40" y1="260" x2="40" y2="290" />
-        <line x1="40" y1="290" x2="80" y2="290" />
+        <line id="line-r1m5-r2m3-h1" x1="0" y1="270" x2="40" y2="270" />
+        <line id="line-r1m5-r2m3-v"  x1="40" y1="270" x2="40" y2="300" />
+        <line id="line-r1m5-r2m3-h2" x1="40" y1="300" x2="80" y2="300" />
 
-        <line id="line-r1m6-r2m3" x1="0" y1="320" x2="40" y2="320" />
-        <line x1="40" y1="320" x2="40" y2="290" />
-        <line x1="40" y1="290" x2="80" y2="290" />
+        <line id="line-r1m6-r2m3-h1" x1="0" y1="330" x2="40" y2="330" />
+        <line id="line-r1m6-r2m3-v"  x1="40" y1="330" x2="40" y2="300" />
+        <line id="line-r1m6-r2m3-h2" x1="40" y1="300" x2="80" y2="300" />
 
         <!-- r1m7 & r1m8 → r2m4 -->
-        <line id="line-r1m7-r2m4" x1="0" y1="380" x2="40" y2="380" />
-        <line x1="40" y1="380" x2="40" y2="410" />
-        <line x1="40" y1="410" x2="80" y2="410" />
+        <line id="line-r1m7-r2m4-h1" x1="0" y1="390" x2="40" y2="390" />
+        <line id="line-r1m7-r2m4-v"  x1="40" y1="390" x2="40" y2="420" />
+        <line id="line-r1m7-r2m4-h2" x1="40" y1="420" x2="80" y2="420" />
 
-        <line id="line-r1m8-r2m4" x1="0" y1="440" x2="40" y2="440" />
-        <line x1="40" y1="440" x2="40" y2="410" />
-        <line x1="40" y1="410" x2="80" y2="410" />
+        <line id="line-r1m8-r2m4-h1" x1="0" y1="450" x2="40" y2="450" />
+        <line id="line-r1m8-r2m4-v"  x1="40" y1="450" x2="40" y2="420" />
+        <line id="line-r1m8-r2m4-h2" x1="40" y1="420" x2="80" y2="420" />
       </svg>
     </div>
   </div>
@@ -266,22 +276,22 @@
     <div class="round2-lines">
       <svg>
         <!-- r2m1 & r2m2 → r3m1 -->
-        <line id="line-r2m1-r3m1" x1="0" y1="50" x2="40" y2="50" />
-        <line x1="40" y1="50" x2="40" y2="110" />
-        <line x1="40" y1="110" x2="80" y2="110" />
+        <line id="line-r2m1-r3m1-h1" x1="0" y1="80" x2="40" y2="80" />
+        <line id="line-r2m1-r3m1-v"  x1="40" y1="80" x2="40" y2="140" />
+        <line id="line-r2m1-r3m1-h2" x1="40" y1="140" x2="80" y2="140" />
 
-        <line id="line-r2m2-r3m1" x1="0" y1="170" x2="40" y2="170" />
-        <line x1="40" y1="170" x2="40" y2="110" />
-        <line x1="40" y1="110" x2="80" y2="110" />
+        <line id="line-r2m2-r3m1-h1" x1="0" y1="200" x2="40" y2="200" />
+        <line id="line-r2m2-r3m1-v"  x1="40" y1="200" x2="40" y2="140" />
+        <line id="line-r2m2-r3m1-h2" x1="40" y1="140" x2="80" y2="140" />
 
         <!-- r2m3 & r2m4 → r3m2 -->
-        <line id="line-r2m3-r3m2" x1="0" y1="290" x2="40" y2="290" />
-        <line x1="40" y1="290" x2="40" y2="350" />
-        <line x1="40" y1="350" x2="80" y2="350" />
+        <line id="line-r2m3-r3m2-h1" x1="0" y1="320" x2="40" y2="320" />
+        <line id="line-r2m3-r3m2-v"  x1="40" y1="320" x2="40" y2="380" />
+        <line id="line-r2m3-r3m2-h2" x1="40" y1="380" x2="80" y2="380" />
 
-        <line id="line-r2m4-r3m2" x1="0" y1="410" x2="40" y2="410" />
-        <line x1="40" y1="410" x2="40" y2="350" />
-        <line x1="40" y1="350" x2="80" y2="350" />
+        <line id="line-r2m4-r3m2-h1" x1="0" y1="440" x2="40" y2="440" />
+        <line id="line-r2m4-r3m2-v"  x1="40" y1="440" x2="40" y2="380" />
+        <line id="line-r2m4-r3m2-h2" x1="40" y1="380" x2="80" y2="380" />
       </svg>
     </div>
   </div>
@@ -312,13 +322,13 @@
     <div class="round3-lines">
       <svg>
         <!-- r3m1 & r3m2 → final -->
-        <line id="line-r3m1-final" x1="0" y1="80" x2="40" y2="80" />
-        <line x1="40" y1="80" x2="40" y2="160" />
-        <line x1="40" y1="160" x2="80" y2="160" />
+        <line id="line-r3m1-final-h1" x1="0" y1="100" x2="40" y2="100" />
+        <line id="line-r3m1-final-v"  x1="40" y1="100" x2="40" y2="160" />
+        <line id="line-r3m1-final-h2" x1="40" y1="160" x2="80" y2="160" />
 
-        <line id="line-r3m2-final" x1="0" y1="200" x2="40" y2="200" />
-        <line x1="40" y1="200" x2="40" y2="160" />
-        <line x1="40" y1="160" x2="80" y2="160" />
+        <line id="line-r3m2-final-h1" x1="0" y1="220" x2="40" y2="220" />
+        <line id="line-r3m2-final-v"  x1="40" y1="220" x2="40" y2="160" />
+        <line id="line-r3m2-final-h2" x1="40" y1="160" x2="80" y2="160" />
       </svg>
     </div>
   </div>
@@ -378,51 +388,83 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
-    /* ★ デフォルト線を赤くする（スクショ風） */
+    /* ★ 赤線：横＋縦＋次の横の3本セットを赤くする */
     const mid = match.id;
+
+    // 1回戦 → 2回戦
     if (mid === "r1m1") {
-      document.getElementById("line-r1m1-r2m1").classList.add("active");
+      ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m2") {
-      document.getElementById("line-r1m2-r2m1").classList.add("active");
+      ["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m3") {
-      document.getElementById("line-r1m3-r2m2").classList.add("active");
+      ["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m4") {
-      document.getElementById("line-r1m4-r2m2").classList.add("active");
+      ["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m5") {
-      document.getElementById("line-r1m5-r2m3").classList.add("active");
+      ["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m6") {
-      document.getElementById("line-r1m6-r2m3").classList.add("active");
+      ["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m7") {
-      document.getElementById("line-r1m7-r2m4").classList.add("active");
+      ["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r1m8") {
-      document.getElementById("line-r1m8-r2m4").classList.add("active");
+      ["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
 
+    // 2回戦 → 準決勝（2個セットの位置修正）
     if (mid === "r2m1") {
-      document.getElementById("line-r2m1-r3m1").classList.add("active");
+      ["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r2m2") {
-      document.getElementById("line-r2m2-r3m1").classList.add("active");
+      ["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r2m3") {
-      document.getElementById("line-r2m3-r3m2").classList.add("active");
+      ["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r2m4") {
-      document.getElementById("line-r2m4-r3m2").classList.add("active");
+      ["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
 
+    // 準決勝 → 決勝
     if (mid === "r3m1") {
-      document.getElementById("line-r3m1-final").classList.add("active");
+      ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
     if (mid === "r3m2") {
-      document.getElementById("line-r3m2-final").classList.add("active");
+      ["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"].forEach(id=>{
+        document.getElementById(id).classList.add("active");
+      });
     }
 
     if (match.id === "final") {
@@ -452,52 +494,30 @@ document.addEventListener("click", e => {
 
     delete slot.dataset.winner;
 
-    /* ★ 線の赤を戻す */
+    /* ★ 赤線を元に戻す（横＋縦＋次の横の3本セット） */
     const mid = match.id;
-    if (mid === "r1m1") {
-      document.getElementById("line-r1m1-r2m1").classList.remove("active");
-    }
-    if (mid === "r1m2") {
-      document.getElementById("line-r1m2-r2m1").classList.remove("active");
-    }
-    if (mid === "r1m3") {
-      document.getElementById("line-r1m3-r2m2").classList.remove("active");
-    }
-    if (mid === "r1m4") {
-      document.getElementById("line-r1m4-r2m2").classList.remove("active");
-    }
-    if (mid === "r1m5") {
-      document.getElementById("line-r1m5-r2m3").classList.remove("active");
-    }
-    if (mid === "r1m6") {
-      document.getElementById("line-r1m6-r2m3").classList.remove("active");
-    }
-    if (mid === "r1m7") {
-      document.getElementById("line-r1m7-r2m4").classList.remove("active");
-    }
-    if (mid === "r1m8") {
-      document.getElementById("line-r1m8-r2m4").classList.remove("active");
-    }
 
-    if (mid === "r2m1") {
-      document.getElementById("line-r2m1-r3m1").classList.remove("active");
-    }
-    if (mid === "r2m2") {
-      document.getElementById("line-r2m2-r3m1").classList.remove("active");
-    }
-    if (mid === "r2m3") {
-      document.getElementById("line-r2m3-r3m2").classList.remove("active");
-    }
-    if (mid === "r2m4") {
-      document.getElementById("line-r2m4-r3m2").classList.remove("active");
-    }
+    const clearSet = ids => ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("active");
+    });
 
-    if (mid === "r3m1") {
-      document.getElementById("line-r3m1-final").classList.remove("active");
-    }
-    if (mid === "r3m2") {
-      document.getElementById("line-r3m2-final").classList.remove("active");
-    }
+    if (mid === "r1m1") clearSet(["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]);
+    if (mid === "r1m2") clearSet(["line-r1m2-r2m1-h1","line-r1m2-r2m1-v","line-r1m2-r2m1-h2"]);
+    if (mid === "r1m3") clearSet(["line-r1m3-r2m2-h1","line-r1m3-r2m2-v","line-r1m3-r2m2-h2"]);
+    if (mid === "r1m4") clearSet(["line-r1m4-r2m2-h1","line-r1m4-r2m2-v","line-r1m4-r2m2-h2"]);
+    if (mid === "r1m5") clearSet(["line-r1m5-r2m3-h1","line-r1m5-r2m3-v","line-r1m5-r2m3-h2"]);
+    if (mid === "r1m6") clearSet(["line-r1m6-r2m3-h1","line-r1m6-r2m3-v","line-r1m6-r2m3-h2"]);
+    if (mid === "r1m7") clearSet(["line-r1m7-r2m4-h1","line-r1m7-r2m4-v","line-r1m7-r2m4-h2"]);
+    if (mid === "r1m8") clearSet(["line-r1m8-r2m4-h1","line-r1m8-r2m4-v","line-r1m8-r2m4-h2"]);
+
+    if (mid === "r2m1") clearSet(["line-r2m1-r3m1-h1","line-r2m1-r3m1-v","line-r2m1-r3m1-h2"]);
+    if (mid === "r2m2") clearSet(["line-r2m2-r3m1-h1","line-r2m2-r3m1-v","line-r2m2-r3m1-h2"]);
+    if (mid === "r2m3") clearSet(["line-r2m3-r3m2-h1","line-r2m3-r3m2-v","line-r2m3-r3m2-h2"]);
+    if (mid === "r2m4") clearSet(["line-r2m4-r3m2-h1","line-r2m4-r3m2-v","line-r2m4-r3m2-h2"]);
+
+    if (mid === "r3m1") clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
+    if (mid === "r3m2") clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
 
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";

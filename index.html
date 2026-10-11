@@ -8,7 +8,7 @@
 
   .bracket {
     display: flex;
-    gap: 120px;
+    gap: 140px;
     align-items: flex-start;
   }
 
@@ -61,11 +61,12 @@
     pointer-events: none;
   }
 
-  /* 階段線（L字）＋アニメーション付き */
+  /* 階段線（L字） */
   .step-line {
     position: absolute;
     left: 150px;      /* 名前の右あたり */
-    top: 30%;         /* 2つのスロットの中間付近 */
+    top: 50%;         /* 2つのスロットの中央 */
+    transform: translateY(-50%);
     width: 0px;       /* 初期は0で、activeで伸びる */
     height: 2px;
     background: black;
@@ -114,7 +115,7 @@
 
 <div class="bracket">
 
-  <!-- 1回戦（左の黒線なし） -->
+  <!-- 1回戦（左線なし） -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
@@ -159,7 +160,7 @@
     </div>
   </div>
 
-  <!-- 2回戦（階段線あり） -->
+  <!-- 2回戦 -->
   <div class="round">
     <h2>2回戦</h2>
 

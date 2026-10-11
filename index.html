@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>16人トーナメント</title>
+<title>16人トーナメント（修正版）</title>
 <style>
   body { font-family: sans-serif; }
 
@@ -45,23 +45,12 @@
     cursor: pointer;
   }
 
-  /* 勝利ライン（縦） */
-  .win-line {
-    position: absolute;
-    width: 3px;
-    background: red;
-    left: 0px;
-    bottom: 0;
-    height: 0;
-    transition: height 0.4s ease-out;
-  }
-
   .disabled {
     opacity: 0.5;
     pointer-events: none;
   }
 
-  /* ★ デフォルトのトーナメント線（1回戦→2回戦） */
+  /* 1回戦→2回戦の線（まとめて描画） */
   .round-lines {
     position: absolute;
     left: 140px; /* 名前の右あたりから線を出す */
@@ -147,7 +136,7 @@
 </head>
 <body>
 
-<h1>16人トーナメント（デフォルト線＋赤変色＋位置修正）</h1>
+<h1>16人トーナメント（修正版）</h1>
 
 <div class="bracket">
 
@@ -357,6 +346,14 @@
 </div>
 
 <script>
+/*
+  修正点まとめ
+  - 左にあった win-line（縦の赤バー）を削除（CSS/JSともに扱わない）
+  - 各 match の「上 or 下 が勝ったか」を判定して、対応する SVG の3本セット（横→縦→横）を赤にする
+  - r1m1/r1m2 → r2m1 のように勝者の進行先を固定（HTML の data-next で既に固定）
+  - undo は名前を消してボタンを復活させ、該当する可能性のある全ての線セットを消す（安全策）
+*/
+
 document.addEventListener("click", e => {
   const btn = e.target;
 
@@ -366,47 +363,38 @@ document.addEventListener("click", e => {
     const match = btn.closest(".match");
     const winnerName = slot.querySelector(".name").textContent;
 
+    // 次のマッチへ名前を入れる（data-next に従う固定進行）
     const nextId = match.dataset.next;
     if (nextId) {
       const nextMatch = document.getElementById(nextId);
-      const nextSlots = nextMatch.querySelectorAll(".slot .name");
-      for (const ns of nextSlots) {
-        if (!ns.textContent) {
-          ns.textContent = winnerName;
-          break;
+      if (nextMatch) {
+        const nextSlots = nextMatch.querySelectorAll(".slot .name");
+        for (const ns of nextSlots) {
+          if (!ns.textContent) {
+            ns.textContent = winnerName;
+            break;
+          }
         }
       }
     }
 
-    slot.dataset.winner = "true";
-
-    let line = match.querySelector(".win-line");
-    if (!line) {
-      line = document.createElement("div");
-      line.className = "win-line";
-      match.appendChild(line);
-    }
-    const slotRect = slot.getBoundingClientRect();
-    const matchRect = match.getBoundingClientRect();
-    const height = slotRect.top - matchRect.top;
-    line.style.height = height + "px";
-
+    // ボタン無効化
     match.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
 
-    /* ★ どっちのslotが勝ったか判定 */
+    // どっちのslotが勝ったか判定
     const slots = match.querySelectorAll(".slot");
     const isTop = slot === slots[0];
-    const isBottom = slot === slots[1];
+    // const isBottom = slot === slots[1]; // 今回は isTop の真偽だけで分岐する
 
-    /* ★ 赤線：横＋縦＋次の横の3本セットを赤くする */
-    const mid = match.id;
-
+    // 赤線を付けるユーティリティ
     const activate = ids => ids.forEach(id=>{
       const el = document.getElementById(id);
       if (el) el.classList.add("active");
     });
 
-    // 1回戦 → 2回戦
+    const mid = match.id;
+
+    // 1回戦 → 2回戦（上が勝ったら上側の3本、下が勝ったら下側の3本）
     if (mid === "r1m1") {
       activate(isTop
         ? ["line-r1m1-r2m1-h1","line-r1m1-r2m1-v","line-r1m1-r2m1-h2"]
@@ -486,6 +474,7 @@ document.addEventListener("click", e => {
         : ["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
     }
 
+    // 決勝の優勝表示（final は data-next を持たない）
     if (match.id === "final") {
       document.getElementById("champion").textContent = winnerName;
     }
@@ -496,13 +485,13 @@ document.addEventListener("click", e => {
     const slot = btn.closest(".slot");
     const match = btn.closest(".match");
 
+    // 名前を消す
     slot.querySelector(".name").textContent = "";
 
-    const line = match.querySelector(".win-line");
-    if (line) line.remove();
-
+    // ボタンを復活
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
+    // 前のマッチのボタンを復活（data-prev がある slot の場合）
     const prevMatchId = slot.dataset.prev;
     if (prevMatchId) {
       const prevMatch = document.getElementById(prevMatchId);
@@ -511,9 +500,7 @@ document.addEventListener("click", e => {
       }
     }
 
-    delete slot.dataset.winner;
-
-    /* ★ 赤線を元に戻す */
+    // 赤線を元に戻す（安全のため、該当する可能性のある全セットを消す）
     const clearSet = ids => ids.forEach(id=>{
       const el = document.getElementById(id);
       if (el) el.classList.remove("active");
@@ -539,6 +526,7 @@ document.addEventListener("click", e => {
     clearSet(["line-r3m1-final-h1","line-r3m1-final-v","line-r3m1-final-h2"]);
     clearSet(["line-r3m2-final-h1","line-r3m2-final-v","line-r3m2-final-h2"]);
 
+    // 決勝の優勝表示クリア
     if (match.id === "final") {
       document.getElementById("champion").textContent = "";
     }

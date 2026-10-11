@@ -43,7 +43,6 @@
     cursor: pointer;
   }
 
-  /* 勝利ライン（上方向に伸びる） */
   .win-line {
     position: absolute;
     width: 3px;
@@ -66,46 +65,46 @@
 
 <div class="bracket">
 
-  <!-- 1回戦（undo削除済み） -->
+  <!-- 1回戦 -->
   <div class="round" id="round1">
     <h2>1回戦</h2>
 
-    <div class="match" data-next="r2m1">
+    <div class="match" id="r1m1" data-next="r2m1">
       <div class="slot"><span class="name">P1</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P2</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m1">
+    <div class="match" id="r1m2" data-next="r2m1">
       <div class="slot"><span class="name">P3</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P4</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m2">
+    <div class="match" id="r1m3" data-next="r2m2">
       <div class="slot"><span class="name">P5</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P6</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m2">
+    <div class="match" id="r1m4" data-next="r2m2">
       <div class="slot"><span class="name">P7</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P8</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m3">
+    <div class="match" id="r1m5" data-next="r2m3">
       <div class="slot"><span class="name">P9</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P10</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m3">
+    <div class="match" id="r1m6" data-next="r2m3">
       <div class="slot"><span class="name">P11</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P12</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m4">
+    <div class="match" id="r1m7" data-next="r2m4">
       <div class="slot"><span class="name">P13</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P14</span><button class="btn win">勝ち</button></div>
     </div>
 
-    <div class="match" data-next="r2m4">
+    <div class="match" id="r1m8" data-next="r2m4">
       <div class="slot"><span class="name">P15</span><button class="btn win">勝ち</button></div>
       <div class="slot"><span class="name">P16</span><button class="btn win">勝ち</button></div>
     </div>
@@ -115,22 +114,22 @@
   <div class="round">
     <h2>2回戦</h2>
 
-    <div class="match" id="r2m1" data-next="r3m1">
+    <div class="match" id="r2m1" data-next="r3m1" data-prev="r1m1,r1m2">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
 
-    <div class="match" id="r2m2" data-next="r3m1">
+    <div class="match" id="r2m2" data-next="r3m1" data-prev="r1m3,r1m4">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
 
-    <div class="match" id="r2m3" data-next="r3m2">
+    <div class="match" id="r2m3" data-next="r3m2" data-prev="r1m5,r1m6">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
 
-    <div class="match" id="r2m4" data-next="r3m2">
+    <div class="match" id="r2m4" data-next="r3m2" data-prev="r1m7,r1m8">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
@@ -140,12 +139,12 @@
   <div class="round">
     <h2>準決勝</h2>
 
-    <div class="match" id="r3m1" data-next="final">
+    <div class="match" id="r3m1" data-next="final" data-prev="r2m1,r2m2">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
 
-    <div class="match" id="r3m2" data-next="final">
+    <div class="match" id="r3m2" data-next="final" data-prev="r2m3,r2m4">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
     </div>
@@ -155,7 +154,7 @@
   <div class="round">
     <h2>決勝</h2>
 
-    <div class="match" id="final">
+    <div class="match" id="final" data-prev="r3m1,r3m2">
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
       <div class="slot"><span class="name"></span><button class="btn win">勝ち</button><button class="btn undo">戻す</button></div>
 
@@ -212,7 +211,7 @@ document.addEventListener("click", e => {
     }
   }
 
-  // 戻すボタン（階層的に戻す）
+  // 戻すボタン（対応ブロックだけ戻す）
   if (btn.classList.contains("undo")) {
     const match = btn.closest(".match");
 
@@ -224,18 +223,13 @@ document.addEventListener("click", e => {
 
     match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
 
-    // 一段階前の試合（例：二回戦 → 一回戦）
-    const prevMatches = document.querySelectorAll(`[data-next="${match.id}"]`);
-    prevMatches.forEach(pm => {
-      pm.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
-    });
-
-    // 二段階前の試合（例：三回戦 → 二回戦 → 一回戦）
-    prevMatches.forEach(pm => {
-      const prevPrevMatches = document.querySelectorAll(`[data-next="${pm.id}"]`);
-      prevPrevMatches.forEach(ppm => {
-        ppm.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
-      });
+    // data-prev に書かれた試合だけ復活
+    const prevIds = match.dataset.prev.split(",");
+    prevIds.forEach(id => {
+      const prevMatch = document.getElementById(id);
+      if (prevMatch) {
+        prevMatch.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
+      }
     });
   }
 });

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>シンプルトーナメント（固定進行）</title>
+<title>シンプルトーナメント（固定進行・修正版）</title>
 <style>
   :root{
     --gap:18px;
@@ -56,10 +56,6 @@
     margin-bottom:12px;
     min-height: calc(var(--slot-h) * 2 + var(--gap));
     background:linear-gradient(180deg, rgba(0,0,0,0.01), transparent);
-  }
-
-  .match.highlight{
-    box-shadow:0 0 0 2px rgba(200,50,50,0.06);
   }
 
   .slot{
@@ -122,7 +118,6 @@
     color:var(--accent);
   }
 
-  /* 小さい画面で横並び崩れないように */
   @media (max-width:720px){
     .container{ flex-direction:column; gap:12px; }
   }
@@ -130,7 +125,7 @@
 </head>
 <body>
 
-<h1>シンプルトーナメント（固定進行）</h1>
+<h1>シンプルトーナメント（固定進行・修正版）</h1>
 
 <div class="container">
 
@@ -283,29 +278,74 @@
 
 <script>
 /*
-  仕様
-  - トーナメント線は完全に削除（視覚要素なし）
-  - 進行は固定： r1m1/r1m2 -> r2m1, r1m3/r1m4 -> r2m2, r2m1/r2m2 -> r3m1, r3m1/r3m2 -> final
-  - 勝ちボタンを押すと data-next に従って次のマッチの最初の空きスロットに勝者名を入れる
-  - undo ボタンでそのスロットの名前を消す（前のマッチのボタンは復活しない簡易仕様）
-  - final の勝利で優勝者表示
+  修正版のポイント（ユーザー要望に合わせて）
+  - トーナメント線は表示しない（削除）
+  - 進行は固定（data-next 属性に従う）
+    r1m1/r1m2 -> r2m1
+    r1m3/r1m4 -> r2m2
+    r2m1/r2m2 -> r3m1
+    r3m1/r3m2 -> final
+  - 勝ちボタン押下で次のマッチの最初の空きスロットに勝者名を入れる
+    そのスロットには data-from 属性で「どの match から来たか」を保存
+  - undo 押下で：
+    ・そのスロットの名前を消す
+    ・そのスロットが data-from を持っていれば、元の match の勝ちボタンを復活させる
+    ・さらに、その match（undo を押したスロットの親 match）から派生している下流のスロットを再帰的に消し、該当するマッチの勝ちボタンを復活させる（整合性を保つ）
+  - final の勝ちで優勝表示
 */
 
 document.addEventListener("click", (e) => {
   const btn = e.target;
   if (!btn.classList.contains("win") && !btn.classList.contains("undo")) return;
 
-  const slotEl = btn.closest(".slot");
-  const matchEl = btn.closest(".match");
+  // ユーティリティ：その match の全 win ボタンを有効化/無効化
+  const setMatchWinDisabled = (matchEl, disabled) => {
+    if (!matchEl) return;
+    matchEl.querySelectorAll(".win").forEach(b => {
+      if (disabled) b.classList.add("disabled");
+      else b.classList.remove("disabled");
+    });
+  };
+
+  // ユーティリティ：ある matchId を起点に下流に流れた名前を再帰的に消す
+  const clearDownstream = (fromMatchId) => {
+    // 全スロットを検索して data-from が fromMatchId のものを消す
+    const allSlots = document.querySelectorAll(".slot");
+    allSlots.forEach(slot => {
+      if (slot.dataset.from === fromMatchId) {
+        // 親 match を取得して、その match の win ボタンを復活させる
+        const parentMatch = slot.closest(".match");
+        if (parentMatch) setMatchWinDisabled(parentMatch, false);
+
+        // さらにその親 match の id を使って下流も消す（再帰）
+        const parentMatchId = parentMatch ? parentMatch.id : null;
+        if (parentMatchId) clearDownstream(parentMatchId);
+
+        // このスロット自体をクリア
+        const nameEl = slot.querySelector(".name");
+        if (nameEl) {
+          nameEl.textContent = "";
+          nameEl.classList.add("empty");
+        }
+        delete slot.dataset.from;
+      }
+    });
+  };
 
   // 勝ちボタン処理
   if (btn.classList.contains("win")) {
+    const slotEl = btn.closest(".slot");
+    const matchEl = btn.closest(".match");
     const nameEl = slotEl.querySelector(".name");
-    const winnerName = nameEl.textContent.trim();
-    if (!winnerName) return; // 名前が空なら何もしない
+    const winnerName = nameEl ? nameEl.textContent.trim() : "";
 
-    // 無効化（そのマッチの勝ちボタンを無効化）
-    matchEl.querySelectorAll(".win").forEach(b => b.classList.add("disabled"));
+    if (!winnerName) {
+      // 名前が空なら何もしない（安全策）
+      return;
+    }
+
+    // この match の win ボタンを無効化（勝者確定）
+    setMatchWinDisabled(matchEl, true);
 
     // 次のマッチへ反映（data-next に従う）
     const nextId = matchEl.dataset.next;
@@ -317,34 +357,64 @@ document.addEventListener("click", (e) => {
           if (!ne.textContent.trim()) {
             ne.textContent = winnerName;
             ne.classList.remove("empty");
+            // どの match から来たかを記録（undo 時に元 match を復活させるため）
+            ne.closest(".slot").dataset.from = matchEl.id;
             break;
           }
         }
       }
     }
 
-    // final の優勝表示
+    // final の優勝表示（もしこの match が final なら）
     if (matchEl.id === "final") {
       document.getElementById("champion").textContent = winnerName;
     }
+
     return;
   }
 
   // 戻すボタン処理
   if (btn.classList.contains("undo")) {
+    const slotEl = btn.closest(".slot");
+    const matchEl = btn.closest(".match");
     const nameEl = slotEl.querySelector(".name");
-    // 名前を消す
-    nameEl.textContent = "";
-    nameEl.classList.add("empty");
+    const currentText = nameEl ? nameEl.textContent.trim() : "";
 
-    // そのマッチの勝ちボタンを復活
-    const match = btn.closest(".match");
-    match.querySelectorAll(".win").forEach(b => b.classList.remove("disabled"));
+    if (!currentText) {
+      // 空なら何もしない
+      return;
+    }
+
+    // もしこのスロットがどこから来たかを示す data-from を持っていれば、
+    // その元 match の win ボタンを復活させる
+    const fromMatchId = slotEl.dataset.from;
+    if (fromMatchId) {
+      const prevMatch = document.getElementById(fromMatchId);
+      if (prevMatch) setMatchWinDisabled(prevMatch, false);
+    }
+
+    // このスロットの親 match を起点に、下流に流れている名前を再帰的に消す
+    // （例：r1m1 の undo を押したら r2m1/r3m1/final に流れた名前も消す）
+    const parentMatch = matchEl;
+    if (parentMatch && parentMatch.id) {
+      clearDownstream(parentMatch.id);
+    }
+
+    // このスロット自体をクリア
+    if (nameEl) {
+      nameEl.textContent = "";
+      nameEl.classList.add("empty");
+    }
+    delete slotEl.dataset.from;
+
+    // このスロットの親 match の win ボタンを復活（その match に戻す操作）
+    if (matchEl) setMatchWinDisabled(matchEl, false);
 
     // final の優勝表示クリア（もし final のスロットが消された場合）
-    if (match.id === "final") {
+    if (matchEl.id === "final") {
       document.getElementById("champion").textContent = "";
     }
+
     return;
   }
 });
